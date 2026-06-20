@@ -17,10 +17,19 @@ async function bootstrap() {
 
   // CORS
   const allowedOrigins = [
-    process.env.FRONTEND_URL || 'http://localhost:4200',
     'http://localhost:4200',
     'http://localhost:3000',
   ];
+
+  const frontendUrl = process.env.FRONTEND_URL;
+  if (frontendUrl) {
+    allowedOrigins.push(frontendUrl);
+    if (!frontendUrl.match(/:\d+$/)) {
+      allowedOrigins.push(`${frontendUrl}:8080`);
+    }
+  } else {
+    allowedOrigins.push('http://localhost:4200');
+  }
 
   app.enableCors({
     origin: (origin, callback) => {
