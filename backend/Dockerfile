@@ -9,6 +9,7 @@ RUN npm ci
 COPY . .
 RUN npx prisma generate
 RUN npm run build
+RUN npx tsc prisma/seed.ts --outDir dist/prisma --module commonjs --target es2021 --skipLibCheck --moduleResolution node
 
 # Production stage
 FROM node:20-alpine AS production
