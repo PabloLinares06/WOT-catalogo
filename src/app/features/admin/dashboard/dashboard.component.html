@@ -1,0 +1,508 @@
+<div class="min-h-screen bg-[#f0f4f8] dark:bg-[#080D14] transition-colors duration-300">
+
+  <!-- ── Topbar WOT ── -->
+  <header class="bg-white dark:bg-[#080D14] shadow-sm border-b border-gray-200 dark:border-[#1A3050]/70 sticky top-0 z-40 transition-colors duration-300 relative">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <!-- Logo negro/blanco según modo -->
+        <img src="/logo-wot-energy-black.jpeg"
+             alt="WOT Energy Logo"
+             class="h-8 w-auto object-contain dark:hidden" />
+        <img src="/logo-wot-energy-white.jpeg"
+             alt="WOT Energy Logo"
+             class="h-8 w-auto object-contain hidden dark:block" />
+        <div>
+          <p class="text-gray-800 dark:text-[#E8F0F8] font-semibold text-sm leading-none">Admin Panel</p>
+          <p class="text-gray-400 dark:text-[#6A8DAF] text-xs mt-0.5">WOT Energy S.A.S.</p>
+        </div>
+      </div>
+
+      <!-- Right side controls -->
+      <div class="flex items-center gap-2">
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center gap-2">
+          <a routerLink="/"
+             class="text-gray-500 dark:text-gray-400 hover:text-brand-500 dark:hover:text-brand-300 text-sm font-medium px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-brand-900/40 transition">
+            Ver tienda
+          </a>
+          <a routerLink="/admin/categories"
+             class="text-gray-500 dark:text-gray-400 hover:text-brand-500 dark:hover:text-brand-300 text-sm font-medium px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-brand-900/40 transition flex items-center gap-1.5"
+             title="Gestionar categorías">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+            </svg>
+            <span>Categorías</span>
+          </a>
+          <a routerLink="/admin/banners"
+             class="text-gray-500 dark:text-gray-400 hover:text-brand-500 dark:hover:text-brand-300 text-sm font-medium px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-brand-900/40 transition flex items-center gap-1.5"
+             title="Gestionar banners">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <span>Banners</span>
+          </a>
+          <a routerLink="/admin/price-update"
+             class="text-gray-500 dark:text-gray-400 hover:text-brand-500 dark:hover:text-brand-300 text-sm font-medium px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-brand-900/40 transition flex items-center gap-1.5"
+             title="Actualizar precios">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 1.12-3 2.5S10.343 13 12 13s3 1.12 3 2.5S13.657 18 12 18m0-10V6m0 12v-2m9-4a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>Precios</span>
+          </a>
+          <a routerLink="/admin/order"
+             class="text-gray-500 dark:text-gray-400 hover:text-brand-500 dark:hover:text-brand-300 text-sm font-medium px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-brand-900/40 transition flex items-center gap-1.5"
+             title="Ordenar productos">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/>
+            </svg>
+            <span>Ordenar</span>
+          </a>
+          <a routerLink="/admin/products/new"
+             class="bg-brand-500 hover:bg-brand-600 active:scale-95 text-white text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm shadow-brand-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+            </svg>
+            Nuevo
+          </a>
+        </div>
+
+        <!-- Dark mode toggle (Always visible) -->
+        <button (click)="themeService.toggle()"
+                class="p-2 rounded-xl text-gray-500 dark:text-gray-400 hover:text-brand-500 dark:hover:text-yellow-400 hover:bg-brand-50 dark:hover:bg-gray-700 transition-all duration-200"
+                [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'">
+          @if (themeService.isDark()) {
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+            </svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+          }
+        </button>
+
+        <!-- Logout (Desktop only) -->
+        <button (click)="logout()"
+                class="hidden md:block text-gray-400 dark:text-gray-500 hover:text-red-500 p-2 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition" title="Cerrar sesión">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+        </button>
+
+        <!-- Hamburger Menu Button (Mobile only) -->
+        <button (click)="toggleMenu()" class="md:hidden p-2 text-gray-500 dark:text-gray-400 hover:text-brand-500 hover:bg-brand-50 dark:hover:bg-gray-800 rounded-xl transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            @if (menuOpen()) {
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+            } @else {
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
+            }
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu dropdown -->
+    @if (menuOpen()) {
+      <div class="md:hidden absolute top-full left-0 w-full bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 shadow-lg px-4 py-3 flex flex-col gap-1 z-50 animate-slide-up">
+        <a routerLink="/admin/products/new" (click)="toggleMenu()"
+           class="px-4 py-2.5 rounded-xl bg-brand-50 dark:bg-brand-900/40 text-brand-600 dark:text-brand-300 font-semibold transition text-sm flex items-center gap-2 mb-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          Nuevo Producto
+        </a>
+        <a routerLink="/admin/categories" (click)="toggleMenu()"
+           class="px-4 py-2.5 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-brand-50 dark:hover:bg-brand-900/40 hover:text-brand-500 transition text-sm font-medium flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+          </svg>
+          Categorías
+        </a>
+        <a routerLink="/admin/price-update" (click)="toggleMenu()"
+           class="px-4 py-2.5 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-brand-50 dark:hover:bg-brand-900/40 hover:text-brand-500 transition text-sm font-medium flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 1.12-3 2.5S10.343 13 12 13s3 1.12 3 2.5S13.657 18 12 18m0-10V6m0 12v-2m9-4a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Actualizar Precios
+        </a>
+        <a routerLink="/admin/order" (click)="toggleMenu()"
+           class="px-4 py-2.5 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-brand-50 dark:hover:bg-brand-900/40 hover:text-brand-500 transition text-sm font-medium flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/>
+          </svg>
+          Ordenar Productos
+        </a>
+        <a routerLink="/admin/banners" (click)="toggleMenu()"
+           class="px-4 py-2.5 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-brand-50 dark:hover:bg-brand-900/40 hover:text-brand-500 transition text-sm font-medium flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          Banners
+        </a>
+        <a routerLink="/" (click)="toggleMenu()"
+           class="px-4 py-2.5 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-brand-50 dark:hover:bg-brand-900/40 hover:text-brand-500 transition text-sm font-medium flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          Ver Tienda
+        </a>
+        <div class="border-t border-gray-100 dark:border-gray-800 my-1"></div>
+        <button (click)="logout(); toggleMenu()"
+           class="px-4 py-2.5 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition text-sm font-medium flex items-center gap-2 w-full text-left">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+          Cerrar Sesión
+        </button>
+      </div>
+    }
+  </header>
+
+  <div class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+
+    <!-- ── Stats ── -->
+    @if (!loading()) {
+      <div class="grid grid-cols-3 gap-3">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-3 sm:p-4 flex flex-col sm:flex-row items-center sm:items-center gap-2 sm:gap-4">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 bg-brand-50 dark:bg-brand-900/40 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5 text-brand-500 dark:text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+          </div>
+          <div class="text-center sm:text-left">
+            <p class="text-xl sm:text-2xl font-extrabold text-gray-800 dark:text-gray-100 leading-none">{{ totalProducts() }}</p>
+            <p class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 font-medium mt-0.5">Total</p>
+          </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 bg-green-50 dark:bg-green-900/40 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="text-center sm:text-left">
+            <p class="text-xl sm:text-2xl font-extrabold text-gray-800 dark:text-gray-100 leading-none">{{ activeProducts() }}</p>
+            <p class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 font-medium mt-0.5">Activos</p>
+          </div>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-3 sm:p-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 bg-gray-50 dark:bg-gray-700 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+            </svg>
+          </div>
+          <div class="text-center sm:text-left">
+            <p class="text-xl sm:text-2xl font-extrabold text-gray-800 dark:text-gray-100 leading-none">{{ hiddenProducts() }}</p>
+            <p class="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 font-medium mt-0.5">Ocultos</p>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- ── Search & Filters ── -->
+    <div class="flex flex-col sm:flex-row gap-3">
+      <!-- Search -->
+      <div class="relative flex-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input
+          type="text"
+          [value]="searchQuery()"
+          (input)="setSearch($any($event.target).value)"
+          placeholder="Buscar por nombre, categoría o descripción..."
+          class="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition bg-white dark:bg-gray-800 dark:text-gray-200 dark:placeholder-gray-500"/>
+      </div>
+      <!-- Category filter -->
+      <select
+        [value]="selectedCategory()"
+        (change)="setCategory($any($event.target).value)"
+        class="border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white dark:bg-gray-800 dark:text-gray-300 text-gray-600 min-w-[160px]">
+        @for (cat of categories(); track cat) {
+          <option [value]="cat">{{ cat }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- ── Filtro de estado ── -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 hide-scrollbar">
+        <span class="text-xs text-gray-400 dark:text-gray-500 font-medium mr-1 whitespace-nowrap">Estado:</span>
+        <button (click)="setStatusFilter('todos')"
+          class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 whitespace-nowrap"
+          [class]="statusFilter() === 'todos'
+            ? 'bg-gray-800 dark:bg-gray-100 text-white dark:text-gray-900 shadow-sm'
+            : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'">
+          Todos
+          <span class="bg-white/20 dark:bg-black/10 px-1.5 py-0.5 rounded-full text-[10px]">{{ totalProducts() }}</span>
+        </button>
+        <button (click)="setStatusFilter('activos')"
+          class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 whitespace-nowrap"
+          [class]="statusFilter() === 'activos'
+            ? 'bg-green-500 text-white shadow-sm shadow-green-200'
+            : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-600 dark:hover:text-green-400'">
+          <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+          Activos
+          <span class="bg-white/20 dark:bg-black/10 px-1.5 py-0.5 rounded-full text-[10px]">{{ activeProducts() }}</span>
+        </button>
+        <button (click)="setStatusFilter('inactivos')"
+          class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 whitespace-nowrap"
+          [class]="statusFilter() === 'inactivos'
+            ? 'bg-gray-500 text-white shadow-sm'
+            : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'">
+          <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+          Inactivos
+          <span class="bg-white/20 dark:bg-black/10 px-1.5 py-0.5 rounded-full text-[10px]">{{ hiddenProducts() }}</span>
+        </button>
+      </div>
+
+      <!-- Bulk Update Button -->
+      <button (click)="updateAllObservations()"
+              [disabled]="updatingBatch()"
+              class="flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold border-2 border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-all disabled:opacity-50">
+        @if (updatingBatch()) {
+          <svg class="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Actualizando...
+        } @else {
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          Activar Observación en TODOS
+        }
+      </button>
+    </div>
+
+    <!-- ── Table ── -->
+    @if (loading()) {
+      <div class="space-y-3">
+        @for (i of [1,2,3,4,5]; track i) {
+          <div class="bg-white dark:bg-gray-800 rounded-2xl h-16 animate-pulse border border-gray-100 dark:border-gray-700"></div>
+        }
+      </div>
+    } @else if (filteredProducts().length === 0) {
+      <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm text-center py-20">
+        @if (products().length === 0) {
+          <div class="text-gray-300 dark:text-gray-600 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+          </div>
+          <p class="text-gray-500 dark:text-gray-400 font-semibold text-lg mb-2">Sin productos aún</p>
+          <p class="text-gray-400 dark:text-gray-500 text-sm mb-6">Crea tu primer producto para verlo aquí</p>
+          <a routerLink="/admin/products/new"
+             class="bg-brand-500 text-white px-6 py-3 rounded-xl font-medium hover:bg-brand-600 transition text-sm">
+            Agregar primer producto
+          </a>
+        } @else {
+          <p class="text-gray-400 dark:text-gray-500 font-medium">No se encontraron productos con ese criterio</p>
+          <button (click)="setSearch(''); setCategory('Todas'); setStatusFilter('todos')" class="text-brand-500 dark:text-brand-300 text-sm mt-2 hover:underline">
+            Limpiar filtros
+          </button>
+        }
+      </div>
+    } @else {
+
+      <!-- ── MOBILE ── -->
+      <div class="md:hidden space-y-3">
+        @for (product of pagedProducts(); track product.id) {
+          <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-4 flex flex-col gap-3">
+
+            <div class="flex items-start gap-3">
+              <!-- Imagen -->
+              <div class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-600 flex-shrink-0">
+                @if (product.imageUrl) {
+                  <img [src]="product.imageUrl" [alt]="product.name" class="w-full h-full object-contain p-1">
+                } @else {
+                  <div class="w-full h-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812-1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                    </svg>
+                  </div>
+                }
+              </div>
+
+              <!-- Info -->
+              <div class="flex-1 min-w-0">
+                <p class="font-semibold text-gray-800 dark:text-gray-100 text-sm leading-snug">{{ product.name }}</p>
+                <p class="text-xs text-gray-400 dark:text-gray-500 font-mono mt-0.5">Ref: {{ product.reference }}</p>
+                <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+                  <span class="bg-brand-50 dark:bg-brand-900/40 text-brand-500 dark:text-brand-300 text-[10px] font-semibold px-2 py-0.5 rounded-md">{{ product.category }}</span>
+                  <span class="text-brand-500 dark:text-brand-300 font-bold text-xs">{{ product.price | currency:'COP':'symbol':'1.0-0' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Acciones Mobile -->
+            <div class="flex items-center justify-between pt-3 border-t border-gray-50 dark:border-gray-700">
+              <!-- Estado toggle -->
+              <button (click)="toggleActive(product)"
+                      class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl transition-all"
+                      [class]="product.isActive ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400' : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'">
+                <span class="w-1.5 h-1.5 rounded-full" [class]="product.isActive ? 'bg-green-500' : 'bg-gray-400'"></span>
+                {{ product.isActive ? 'Activo' : 'Oculto' }}
+              </button>
+
+              <!-- Editar + Eliminar -->
+              <div class="flex items-center gap-1">
+                <a [routerLink]="['/admin/products', product.id]"
+                   class="flex items-center gap-1 px-3 py-1.5 text-brand-500 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20 rounded-xl transition text-xs font-semibold" title="Editar">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                  </svg>
+                  Editar
+                </a>
+                <button (click)="deleteProduct(product.id)"
+                        [disabled]="deletingId() === product.id"
+                        class="p-1.5 text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition disabled:opacity-30" title="Eliminar">
+                  @if (deletingId() === product.id) {
+                    <svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                    </svg>
+                  } @else {
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                  }
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Footer móvil -->
+        <div class="flex items-center justify-between px-1 pt-1">
+          <p class="text-xs text-gray-400 dark:text-gray-500">
+            Mostrando <span class="font-semibold text-gray-600 dark:text-gray-300">{{ pagedProducts().length }}</span>
+            de <span class="font-semibold text-gray-600 dark:text-gray-300">{{ filteredProducts().length }}</span> resultados ({{ totalProducts() }} totales)
+          </p>
+        </div>
+      </div>
+
+      <!-- ── DESKTOP: tabla ── -->
+      <div class="hidden md:block bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-100 dark:border-gray-700">
+            <tr>
+              <th class="text-left px-5 py-3 text-gray-500 dark:text-gray-400 font-medium text-xs uppercase tracking-wide">Producto</th>
+              <th class="text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-medium text-xs uppercase tracking-wide">Categoría</th>
+              <th class="text-right px-4 py-3 text-gray-500 dark:text-gray-400 font-medium text-xs uppercase tracking-wide hidden lg:table-cell">Precio</th>
+              <th class="text-center px-4 py-3 text-gray-500 dark:text-gray-400 font-medium text-xs uppercase tracking-wide">Estado</th>
+              <th class="text-right px-5 py-3 text-gray-500 dark:text-gray-400 font-medium text-xs uppercase tracking-wide">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50 dark:divide-gray-700">
+            @for (product of pagedProducts(); track product.id) {
+              <tr class="hover:bg-brand-50/30 dark:hover:bg-brand-900/10 transition group">
+
+                <!-- Producto -->
+                <td class="px-5 py-3.5">
+                  <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-600 flex-shrink-0">
+                      @if (product.imageUrl) {
+                        <img [src]="product.imageUrl" [alt]="product.name" class="w-full h-full object-contain p-1">
+                      } @else {
+                        <div class="w-full h-full flex items-center justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                              d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                          </svg>
+                        </div>
+                      }
+                    </div>
+                    <div class="min-w-0">
+                      <p class="font-semibold text-gray-800 dark:text-gray-100 truncate max-w-[200px] text-sm">{{ product.name }}</p>
+                      @if (product.description) {
+                        <p class="text-gray-400 dark:text-gray-500 text-xs truncate max-w-[200px] mt-0.5">{{ product.description }}</p>
+                      }
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Categoría -->
+                <td class="px-4 py-3.5">
+                  <span class="bg-brand-50 dark:bg-brand-900/40 text-brand-500 dark:text-brand-300 text-xs font-semibold px-2.5 py-1 rounded-full">
+                    {{ product.category }}
+                  </span>
+                </td>
+
+                <!-- Precio -->
+                <td class="px-4 py-3.5 hidden lg:table-cell text-right">
+                  <span class="font-bold text-gray-800 dark:text-gray-100">{{ product.price | currency:'COP':'symbol':'1.0-0' }}</span>
+                </td>
+
+                <!-- Estado toggle -->
+                <td class="px-4 py-3.5 text-center">
+                  <button (click)="toggleActive(product)"
+                          class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full transition-all"
+                          [class]="product.isActive
+                            ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/60'
+                            : 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-600'">
+                    <span class="w-1.5 h-1.5 rounded-full" [class]="product.isActive ? 'bg-green-500' : 'bg-gray-400'"></span>
+                    {{ product.isActive ? 'Activo' : 'Oculto' }}
+                  </button>
+                </td>
+
+                <!-- Acciones -->
+                <td class="px-5 py-3.5">
+                  <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <a [routerLink]="['/admin/products', product.id]"
+                       class="p-2 text-gray-400 dark:text-gray-500 hover:text-brand-500 dark:hover:text-brand-300 hover:bg-brand-50 dark:hover:bg-brand-900/40 rounded-lg transition" title="Editar">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                      </svg>
+                    </a>
+                    <button (click)="deleteProduct(product.id)"
+                            [disabled]="deletingId() === product.id"
+                            class="p-2 text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition disabled:opacity-30" title="Eliminar">
+                      @if (deletingId() === product.id) {
+                        <svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                        </svg>
+                      } @else {
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                      }
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <!-- Table footer -->
+        <div class="px-5 py-3 border-t border-gray-50 dark:border-gray-700 flex items-center justify-between">
+          <p class="text-xs text-gray-400 dark:text-gray-500">
+            Mostrando <span class="font-semibold text-gray-600 dark:text-gray-300">{{ pagedProducts().length }}</span>
+            de <span class="font-semibold text-gray-600 dark:text-gray-300">{{ filteredProducts().length }}</span> resultados ({{ totalProducts() }} totales)
+          </p>
+          <a routerLink="/admin/products/new"
+             class="text-xs text-brand-500 dark:text-brand-300 hover:text-brand-700 dark:hover:text-brand-100 font-medium transition flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+            </svg>
+            Agregar producto
+          </a>
+        </div>
+      </div>
+    }
+
+    <!-- Sentinel para scroll infinito (siempre en el DOM para que el observer pueda engancharse) -->
+    <div #loadMoreSentinel class="w-full h-16 flex items-center justify-center mt-4">
+      @if (hasMore() && !loading()) {
+        <svg class="animate-spin w-6 h-6 text-brand-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      }
+    </div>
+  </div>
+</div>

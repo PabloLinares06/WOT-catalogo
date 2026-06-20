@@ -1,0 +1,57 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: wot_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-wot_db}
+      POSTGRES_USER: ${POSTGRES_USER:-wot_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wot_user} -d ${POSTGRES_DB:-wot_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: wot_api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-wot_user}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-wot_db}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-8h}
+      DO_SPACES_KEY: ${DO_SPACES_KEY}
+      DO_SPACES_SECRET: ${DO_SPACES_SECRET}
+      DO_SPACES_ENDPOINT: ${DO_SPACES_ENDPOINT:-https://nyc3.digitaloceanspaces.com}
+      DO_SPACES_BUCKET: ${DO_SPACES_BUCKET:-catalogo-imagenes-api}
+      DO_SPACES_CDN_URL: ${DO_SPACES_CDN_URL:-https://catalogo-imagenes-api.nyc3.cdn.digitaloceanspaces.com}
+      PORT: 3000
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wot_frontend
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "8080:80"  # Puerto 8080 en el host para que Nginx/SSL se ponga enfrente
+
+volumes:
+  postgres_data:
+    driver: local

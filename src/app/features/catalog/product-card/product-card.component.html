@@ -1,0 +1,350 @@
+<!-- MOBILE / TABLET: tarjeta vertical grande, una por fila -->
+<article data-product-card class="xl:hidden bg-white dark:bg-[#0C1621] rounded-2xl overflow-hidden flex flex-col group border border-slate-100/60 dark:border-wot-border/40 shadow-[0_4px_16px_rgba(0,0,0,0.03)] dark:shadow-none hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-all duration-300 animate-fade-in">
+
+  <!-- Imagen / mini carrusel -->
+  <a data-routerlink="['/product', product.id]"
+     (click)="$event.preventDefault(); $event.stopPropagation()"
+     [class.product-bg-dark]="themeService.isDark()"
+     class="product-img-container product-card-bg relative block w-full cursor-pointer overflow-hidden aspect-square sm:aspect-[2/1] max-h-[40vh] sm:max-h-[35vh]">
+
+    <!-- Skeleton loader para imágenes -->
+    @if (imageLoading() && currentImgUrl()) {
+      <div class="absolute inset-0 z-10 skeleton"></div>
+    }
+
+    @if (currentImgUrl() && !imageError()) {
+      <img [src]="currentImgUrl()" [alt]="product.name" loading="lazy"
+           (load)="onImageLoad()"
+           (error)="onImageError()"
+           class="absolute inset-0 w-full h-full object-contain p-8 sm:p-10 transition-opacity duration-300"
+           [class.opacity-0]="imageLoading()"
+           [class.opacity-100]="!imageLoading()">
+    } @else {
+      <div class="w-full h-full flex flex-col items-center justify-center text-gray-200 dark:text-gray-600 bg-gray-50 dark:bg-gray-700/50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 sm:w-20 sm:h-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        @if (imageError()) {
+          <span class="text-[10px] uppercase font-bold text-gray-400 dark:text-gray-500 mt-2">Imagen no disponible</span>
+        } @else {
+          <span class="text-[10px] uppercase font-bold text-gray-400 dark:text-gray-500 mt-2">Sin imagen</span>
+        }
+      </div>
+    }
+
+    <!-- Badges -->
+    <span class="absolute top-2.5 left-2.5 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-brand-500 dark:text-brand-400 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm border border-brand-100 dark:border-brand-600">
+      {{ product.category }}
+    </span>
+    @if (product.stock !== undefined) {
+      <span class="absolute top-2.5 right-2.5 text-xs font-semibold px-2.5 py-1 rounded-full"
+            [class]="product.stock > 5 ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' : product.stock > 0 ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400' : 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400'">
+        @if (product.stock === 0) { Agotado }
+        @else if (product.stock <= 5) { ¡Últimas {{ product.stock }}! }
+        @else { Stock: {{ product.stock }} }
+      </span>
+    }
+
+    <!-- Flechas (solo si hay más de 1 imagen) -->
+    @if (allImages().length > 1) {
+      <button (click)="prevCard($event)"
+        class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-white transition z-10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <button (click)="nextCard($event)"
+        class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-white transition z-10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+      <!-- Puntos -->
+      <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+        @for (img of allImages(); track $index) {
+          <button (click)="slideIndex.set($index); $event.preventDefault(); $event.stopPropagation()"
+            class="h-1.5 rounded-full transition-all duration-200"
+            [class]="slideIndex() === $index ? 'bg-brand-500 w-4' : 'bg-white/70 w-1.5'">
+          </button>
+        }
+      </div>
+    }
+  </a>
+
+  <!-- Info -->
+  <div class="flex flex-col p-5 sm:p-6 gap-4">
+    <a data-routerlink="['/product', product.id]"
+       (click)="$event.preventDefault(); $event.stopPropagation()"
+       class="font-bold text-gray-800 dark:text-gray-100 text-xl leading-snug hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200 cursor-pointer">
+      {{ product.name }}
+    </a>
+    @if (product.reference) {
+      <p class="text-gray-500 dark:text-gray-400 text-sm font-normal">(<span class="font-bold">{{ product.reference }}</span>)</p>
+    }
+    @if (product.description) {
+      <p class="text-gray-400 dark:text-gray-500 text-base line-clamp-3 sm:line-clamp-4 leading-relaxed">{{ product.description }}</p>
+    }
+
+    <!-- Precio + Control cantidad -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 mt-1 border-t border-gray-100 dark:border-gray-700">
+      <div>
+        <!-- Precio activo -->
+        <span class="font-extrabold text-3xl leading-none transition-colors duration-200"
+          [class]="isBulkActive() ? 'text-purple-600 dark:text-purple-400' : 'text-brand-500 dark:text-brand-400'">
+          {{ activePrice() | currency:'COP':'$':'1.0-0' }}
+        </span>
+        @if (isBulkActive()) {
+          <span class="ml-2 text-xs line-through text-gray-400 dark:text-gray-500">{{ product.price | currency:'COP':'$':'1.0-0' }}</span>
+          <p class="text-purple-500 dark:text-purple-400 text-xs font-semibold mt-1">🏷 Precio mayorista activo</p>
+        } @else {
+          <p class="text-gray-400 dark:text-gray-500 text-sm mt-1.5">por unidad</p>
+          @if (product.bulkMinQty && product.bulkPrice) {
+            <p class="mt-1.5 text-xs font-semibold text-purple-600 dark:text-purple-300 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 px-2.5 py-1 rounded-lg inline-block">
+              Paquete x{{ product.bulkMinQty }} → {{ product.bulkPrice | currency:'COP':'$':'1.0-0' }} c/u
+            </p>
+          }
+        }
+      </div>
+
+      @if (quantity() === 0) {
+        <button (click)="increase()" [disabled]="product.stock === 0"
+          class="flex-shrink-0 w-full sm:w-auto bg-wot-gradient hover:opacity-95 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed text-white text-base sm:text-lg font-semibold px-5 sm:px-5 py-3.5 sm:py-4 rounded-2xl transition-all duration-200 flex items-center justify-center gap-2 sm:gap-2.5 shadow-md shadow-brand-500/10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          Añadir al pedido
+        </button>
+      } @else {
+        <!-- Control - N + -->
+        <div class="flex-shrink-0 w-full sm:w-auto flex flex-row items-center justify-between sm:justify-end gap-1 sm:gap-1.5 bg-brand-50 dark:bg-brand-900/30 rounded-2xl p-1.5">
+          <div class="flex items-center gap-1 sm:gap-1.5">
+            <button (click)="decreaseBy(10)" [disabled]="quantity() <= 0"
+              class="w-9 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white dark:bg-gray-700 text-brand-500 dark:text-brand-300 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 dark:hover:text-red-400 shadow-sm transition-all duration-150 font-bold text-[11px] sm:text-sm disabled:opacity-40 disabled:cursor-not-allowed">
+              -10
+            </button>
+            <button (click)="decrease()"
+              class="w-9 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white dark:bg-gray-700 text-brand-500 dark:text-brand-300 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 dark:hover:text-red-400 shadow-sm transition-all duration-150 font-bold text-lg sm:text-2xl">
+              −
+            </button>
+          </div>
+
+          <input
+            type="number"
+            [value]="quantity()"
+            (change)="setQuantity($event)"
+            min="0"
+            [max]="product.stock ?? 9999"
+            class="w-10 sm:w-16 h-10 sm:h-11 text-center font-extrabold text-brand-500 dark:text-brand-300 text-base sm:text-lg bg-transparent border-none outline-none focus:bg-white dark:focus:bg-gray-700 focus:rounded-xl transition-all duration-150 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-0"/>
+
+          <div class="flex items-center gap-1 sm:gap-1.5">
+            <button (click)="increase()" [disabled]="product.stock !== undefined && quantity() >= product.stock"
+              class="w-9 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-brand-500 hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed text-white shadow-sm transition-all duration-150 font-bold text-lg sm:text-2xl">
+              +
+            </button>
+            <button (click)="increaseBy(10)" [disabled]="product.stock !== undefined && (quantity() + 10) > product.stock"
+              class="w-9 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-brand-500 hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed text-white shadow-sm transition-all duration-150 font-bold text-[11px] sm:text-sm">
+              +10
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Campo observación (móvil) -->
+    @if (product.hasObservation && quantity() > 0) {
+      <div class="mt-3 animate-fade-in">
+        <label class="flex items-center gap-1.5 text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+          </svg>
+          Observación del pedido
+        </label>
+        <textarea
+          rows="2"
+          [value]="observation()"
+          (input)="updateObservation($any($event.target).value)"
+          placeholder=""
+          class="w-full border border-amber-200 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 rounded-xl px-3 py-2 text-sm text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none transition"></textarea>
+      </div>
+    }
+  </div>
+</article>
+
+<!-- DESKTOP (lg+): tarjeta vertical original -->
+<article class="hidden xl:flex bg-white dark:bg-[#0C1621] rounded-2xl overflow-hidden flex-col group border border-slate-100/60 dark:border-wot-border/40 hover:border-brand-300/40 dark:hover:border-brand-500/30 shadow-[0_4px_16px_rgba(0,0,0,0.03)] dark:shadow-none hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 animate-fade-in h-full">
+
+  <div
+    [class.product-bg-dark]="themeService.isDark()"
+    class="product-img-container product-card-bg relative overflow-hidden h-44 flex-shrink-0">
+
+    <a data-routerlink="['/product', product.id]" (click)="$event.preventDefault(); $event.stopPropagation()" class="absolute inset-0 z-0 block"></a>
+
+    <!-- Skeleton loader para imágenes DESKTOP -->
+    @if (imageLoading() && currentImgUrl()) {
+      <div class="absolute inset-0 z-10 skeleton"></div>
+    }
+
+    @if (currentImgUrl() && !imageError()) {
+      <img [src]="currentImgUrl()" [alt]="product.name" loading="lazy"
+           (load)="onImageLoad()"
+           (error)="onImageError()"
+           class="w-full h-full object-contain p-4 transition-opacity duration-300 pointer-events-none"
+           [class.opacity-0]="imageLoading()"
+           [class.opacity-100]="!imageLoading()">
+    } @else {
+      <div class="w-full h-full flex flex-col items-center justify-center text-gray-200 dark:text-gray-600 bg-gray-50 dark:bg-gray-700/50 pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        @if (imageError()) {
+          <span class="text-[9px] uppercase font-bold text-gray-400 dark:text-gray-500 mt-1">No disponible</span>
+        } @else {
+          <span class="text-[9px] uppercase font-bold text-gray-400 dark:text-gray-500 mt-1">Sin imagen</span>
+        }
+      </div>
+    }
+
+
+    <!-- Badges -->
+    <span class="absolute top-2 left-2 z-10 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-brand-500 dark:text-brand-400 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm border border-brand-100 dark:border-brand-600 pointer-events-none">
+      {{ product.category }}
+    </span>
+    @if (product.stock !== undefined) {
+      <span class="absolute top-2 right-2 z-10 text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none"
+            [class]="product.stock > 5 ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' : product.stock > 0 ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400' : 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400'">
+        @if (product.stock === 0) { Agotado }
+        @else if (product.stock <= 5) { ¡Últimas {{ product.stock }}! }
+        @else { Stock: {{ product.stock }} }
+      </span>
+    }
+
+    <!-- Flechas visibles al hover del artículo -->
+    @if (allImages().length > 1) {
+      <button (click)="prevCard($event)"
+        class="absolute left-1.5 top-1/2 -translate-y-1/2 z-10 w-7 h-7 bg-white/80 dark:bg-gray-800/80 rounded-full shadow flex items-center justify-center text-gray-600 dark:text-gray-300 opacity-0 group-hover:opacity-100 hover:bg-white transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <button (click)="nextCard($event)"
+        class="absolute right-1.5 top-1/2 -translate-y-1/2 z-10 w-7 h-7 bg-white/80 dark:bg-gray-800/80 rounded-full shadow flex items-center justify-center text-gray-600 dark:text-gray-300 opacity-0 group-hover:opacity-100 hover:bg-white transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+      <!-- Puntos -->
+      <div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 z-10 flex gap-1">
+        @for (img of allImages(); track $index) {
+          <button (click)="slideIndex.set($index); $event.preventDefault(); $event.stopPropagation()"
+            class="h-1.5 rounded-full transition-all duration-200"
+            [class]="slideIndex() === $index ? 'bg-brand-500 w-3' : 'bg-gray-300 dark:bg-gray-500 w-1.5'">
+          </button>
+        }
+      </div>
+    }
+
+
+  </div>
+
+  <div class="p-4 flex flex-col flex-1">
+    <a data-routerlink="['/product', product.id]" (click)="$event.preventDefault(); $event.stopPropagation()"
+       class="font-semibold text-gray-800 dark:text-gray-100 text-sm leading-snug line-clamp-2 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200 cursor-pointer h-10 mb-2">
+      {{ product.name }}
+    </a>
+    @if (product.reference) {
+      <p class="text-gray-500 dark:text-gray-400 text-xs font-normal mb-1">(<span class="font-bold">{{ product.reference }}</span>)</p>
+    }
+    @if (product.description) {
+      <p class="text-gray-400 dark:text-gray-500 text-xs line-clamp-2 leading-relaxed mb-2">{{ product.description }}</p>
+    }
+
+    <!-- Precio + Control cantidad desktop -->
+    <div class="mt-auto pt-2 border-t border-gray-50 dark:border-gray-700 flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="font-extrabold text-base leading-none transition-colors duration-200"
+            [class]="isBulkActive() ? 'text-purple-600 dark:text-purple-400' : 'text-brand-500 dark:text-brand-400'">
+            {{ activePrice() | currency:'COP':'$':'1.0-0' }}
+          </span>
+          @if (isBulkActive()) {
+            <span class="ml-1 text-xs line-through text-gray-400">{{ product.price | currency:'COP':'$':'1.0-0' }}</span>
+            <p class="text-purple-500 dark:text-purple-400 text-[10px] font-semibold mt-0.5">🏷 Mayorista</p>
+          } @else {
+            <p class="text-gray-300 dark:text-gray-600 text-xs mt-0.5">por unidad</p>
+            @if (product.bulkMinQty && product.bulkPrice) {
+              <p class="mt-1 text-[10px] font-semibold text-purple-600 dark:text-purple-300 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 px-2 py-0.5 rounded-md inline-block">
+                Paquete x{{ product.bulkMinQty }} → {{ product.bulkPrice | currency:'COP':'$':'1.0-0' }} c/u
+              </p>
+            }
+          }
+        </div>
+
+        @if (quantity() === 0) {
+          <!-- Botón añadir inicial -->
+          <button (click)="increase()" [disabled]="product.stock === 0"
+            class="bg-wot-gradient hover:opacity-95 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-1.5 shadow-md shadow-brand-500/10 hover:shadow-brand-500/20 hover:shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+            </svg>
+            Añadir
+          </button>
+        }
+      </div>
+
+      @if (quantity() > 0) {
+        <!-- Control - N + desktop -->
+        <div class="flex items-center justify-between gap-1 bg-brand-50 dark:bg-brand-900/30 rounded-xl p-1 mt-1">
+          <div class="flex items-center gap-0.5">
+             <button (click)="decreaseBy(10)" [disabled]="quantity() <= 0"
+              class="w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-gray-700 text-brand-500 dark:text-brand-300 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 dark:hover:text-red-400 shadow-sm transition-all duration-150 font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed">
+              -10
+            </button>
+            <button (click)="decrease()"
+              class="w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-gray-700 text-brand-500 dark:text-brand-300 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 dark:hover:text-red-400 shadow-sm transition-all duration-150 font-bold text-sm leading-none">
+              −
+            </button>
+          </div>
+
+          <input
+            type="number"
+            [value]="quantity()"
+            (change)="setQuantity($event)"
+            min="0"
+            [max]="product.stock ?? 9999"
+            class="w-10 h-7 text-center font-extrabold text-brand-500 dark:text-brand-300 text-sm bg-transparent border-none outline-none focus:bg-white dark:focus:bg-gray-700 focus:rounded-lg transition-all duration-150 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"/>
+
+          <div class="flex items-center gap-0.5">
+            <button (click)="increase()" [disabled]="product.stock !== undefined && quantity() >= product.stock"
+              class="w-7 h-7 flex items-center justify-center rounded-lg bg-brand-500 hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed text-white shadow-sm transition-all duration-150 font-bold text-sm leading-none">
+              +
+            </button>
+             <button (click)="increaseBy(10)" [disabled]="product.stock !== undefined && (quantity() + 10) > product.stock"
+              class="w-7 h-7 flex items-center justify-center rounded-lg bg-brand-500 hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed text-white shadow-sm transition-all duration-150 font-bold text-xs">
+              +10
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Campo observación (desktop) -->
+    @if (product.hasObservation && quantity() > 0) {
+      <div class="mt-2 animate-fade-in">
+        <label class="flex items-center gap-1 text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+          </svg>
+          Observación
+        </label>
+        <textarea
+          rows="2"
+          [value]="observation()"
+          (input)="updateObservation($any($event.target).value)"
+          placeholder=""
+          class="w-full border border-amber-200 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/20 rounded-xl px-3 py-2 text-xs text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none transition"></textarea>
+      </div>
+    }
+  </div>
+</article>

@@ -1,0 +1,42 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helper: sólo cuentas con custom claim admin=true ──
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
+    // ── Validación básica de un producto ──
+    function validProduct() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['name', 'reference', 'price', 'category', 'isActive'])
+        && data.name is string && data.name.size() > 0
+        && data.reference is string
+        && data.price is number && data.price >= 0
+        && data.category is string
+        && data.isActive is bool;
+    }
+
+    // Productos: lectura pública, escritura solo admin con datos válidos
+    match /products/{productId} {
+      allow read: if true;
+      allow create: if isAdmin() && validProduct();
+      allow update: if isAdmin() && validProduct();
+      allow delete: if isAdmin();
+    }
+
+    // Categorías: lectura pública, escritura solo admin
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Configuración (banners, etc.): lectura pública, escritura solo admin
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+  }
+}

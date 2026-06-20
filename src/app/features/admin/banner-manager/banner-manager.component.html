@@ -1,0 +1,277 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+
+  <!-- ── Topbar ── -->
+  <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40 transition-colors duration-300">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a routerLink="/admin"
+           class="p-2 text-gray-400 dark:text-gray-500 hover:text-brand-500 dark:hover:text-brand-300 hover:bg-brand-50 dark:hover:bg-brand-900/40 rounded-xl transition"
+           title="Volver al panel">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </a>
+        <div>
+          <p class="text-gray-800 dark:text-gray-100 font-semibold text-sm leading-none">Gestión de Banners</p>
+          <p class="text-gray-400 dark:text-gray-500 text-xs mt-0.5">WOT S.A.S.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a routerLink="/"
+           class="text-gray-500 dark:text-gray-400 hover:text-brand-500 dark:hover:text-brand-300 text-sm font-medium px-3 py-2 rounded-xl hover:bg-brand-50 dark:hover:bg-brand-900/40 transition hidden sm:block">
+          Ver tienda
+        </a>
+        <!-- Dark mode toggle -->
+        <button (click)="themeService.toggle()"
+                class="p-2 rounded-xl text-gray-500 dark:text-gray-400 hover:text-brand-500 dark:hover:text-yellow-400 hover:bg-brand-50 dark:hover:bg-gray-700 transition-all duration-200"
+                [title]="themeService.isDark() ? 'Modo claro' : 'Modo oscuro'">
+          @if (themeService.isDark()) {
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/>
+            </svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+          }
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+
+    @if (loading()) {
+      <!-- Skeleton loader -->
+      <div class="space-y-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl h-64 animate-pulse border border-gray-100 dark:border-gray-700"></div>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl h-64 animate-pulse border border-gray-100 dark:border-gray-700"></div>
+      </div>
+    } @else {
+
+      <!-- Toast de éxito -->
+      @if (saved()) {
+        <div class="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-2xl px-5 py-3 flex items-center gap-3 text-green-700 dark:text-green-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p class="text-sm font-medium">Banners actualizados correctamente. Los cambios ya son visibles en la tienda.</p>
+        </div>
+      }
+
+      <!-- Error -->
+      @if (error()) {
+        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl px-5 py-3 flex items-center gap-3 text-red-700 dark:text-red-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p class="text-sm font-medium">{{ error() }}</p>
+        </div>
+      }
+
+      <!-- Info card -->
+      <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl px-5 py-4 flex items-start gap-3 text-blue-700 dark:text-blue-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <div class="text-sm">
+          <p class="font-semibold mb-1">¿Cómo subir los banners?</p>
+          <p class="text-blue-600 dark:text-blue-400">Sube la imagen a cualquier servicio de hosting (Google Drive con enlace público, ImgBB, Cloudinary, etc.) y pega la URL directa aquí. Los cambios se aplican inmediatamente en la tienda.</p>
+        </div>
+      </div>
+
+      <!-- Banner Desktop -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center gap-3">
+          <div class="w-9 h-9 bg-brand-50 dark:bg-brand-900/40 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-brand-500 dark:text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-800 dark:text-gray-100 text-sm">Banner Desktop / Tablet</p>
+            <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Se muestra en pantallas anchas (≥ 1024px). Recomendado: formato horizontal, mínimo 1200×300px.</p>
+          </div>
+        </div>
+
+        <div class="p-5 space-y-4">
+          <!-- URL Input & Upload -->
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="flex-1">
+              <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">URL de la imagen</label>
+              <input
+                type="url"
+                [value]="desktopUrl()"
+                (input)="onDesktopUrlChange($any($event.target).value)"
+                placeholder="https://ejemplo.com/mi-banner-desktop.jpg"
+                class="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition bg-gray-50 dark:bg-gray-900 dark:text-gray-200 dark:placeholder-gray-500 focus:bg-white dark:focus:bg-gray-800"/>
+            </div>
+            <div class="flex flex-col justify-end">
+              <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">O subir desde tu PC</label>
+              <div class="relative inline-block w-full sm:w-auto">
+                <button type="button" [disabled]="uploadingDesktop()" class="w-full sm:w-auto px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-xl transition flex items-center justify-center gap-2">
+                  @if (uploadingDesktop()) {
+                    <svg class="animate-spin w-4 h-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+                    Subiendo...
+                  } @else {
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    Subir foto
+                  }
+                </button>
+                <input type="file" (change)="onDesktopFileSelected($event)" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" [disabled]="uploadingDesktop()">
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview -->
+          <div>
+            <p class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wide">Vista previa</p>
+            @if (desktopPreview()) {
+              <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                <img
+                  [src]="desktopPreview()"
+                  alt="Banner desktop preview"
+                  (error)="onDesktopError()"
+                  class="w-full object-cover max-h-48"/>
+              </div>
+            } @else {
+              <div class="rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 h-32 flex flex-col items-center justify-center gap-2 text-gray-300 dark:text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <p class="text-xs">Pega una URL para ver la previsualización</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Banner Móvil -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
+        <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center gap-3">
+          <div class="w-9 h-9 bg-purple-50 dark:bg-purple-900/40 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-purple-500 dark:text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-800 dark:text-gray-100 text-sm">Banner Móvil</p>
+            <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Se muestra en teléfonos (&lt; 1024px).</p>
+          </div>
+        </div>
+
+        <!-- Especificaciones visuales -->
+        <div class="px-5 pt-4">
+          <div class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4">
+            <p class="text-xs font-bold text-purple-700 dark:text-purple-300 mb-3 uppercase tracking-wide">📐 Resolución ideal para móvil</p>
+            <div class="flex items-start gap-4">
+              <!-- Diagrama proporciones -->
+              <div class="flex gap-3 items-end flex-shrink-0">
+                <!-- 16:9 horizontal — MAL -->
+                <div class="flex flex-col items-center gap-1">
+                  <div class="border-2 border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 rounded flex items-center justify-center" style="width: 64px; height: 36px;">
+                    <span class="text-red-400 dark:text-red-500 text-[9px] font-bold">16:9</span>
+                  </div>
+                  <span class="text-[10px] text-red-500 font-semibold">❌ Desktop</span>
+                </div>
+                <!-- 3:2 — BIEN -->
+                <div class="flex flex-col items-center gap-1">
+                  <div class="border-2 border-green-400 dark:border-green-600 bg-green-50 dark:bg-green-900/20 rounded flex items-center justify-center" style="width: 54px; height: 36px;">
+                    <span class="text-green-600 dark:text-green-400 text-[9px] font-bold">3:2</span>
+                  </div>
+                  <span class="text-[10px] text-green-600 font-semibold">✓ Bueno</span>
+                </div>
+                <!-- 4:3 — IDEAL -->
+                <div class="flex flex-col items-center gap-1">
+                  <div class="border-2 border-purple-500 dark:border-purple-400 bg-purple-100 dark:bg-purple-900/40 rounded flex items-center justify-center" style="width: 48px; height: 36px;">
+                    <span class="text-purple-700 dark:text-purple-300 text-[9px] font-bold">4:3</span>
+                  </div>
+                  <span class="text-[10px] text-purple-600 dark:text-purple-400 font-bold">★ Ideal</span>
+                </div>
+              </div>
+              <!-- Texto explicativo -->
+              <div class="text-xs text-purple-700 dark:text-purple-300 space-y-1 leading-relaxed">
+                <p><span class="font-bold">★ Ideal:</span> 1080 × 810 px (proporción 4:3)</p>
+                <p><span class="font-bold">✓ También válido:</span> 1080 × 720 px (3:2)</p>
+                <p class="text-red-500 dark:text-red-400"><span class="font-bold">❌ Evitar:</span> imágenes 16:9 (se ven cortadas)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-5 space-y-4">
+          <!-- URL Input & Upload -->
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="flex-1">
+              <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">URL de la imagen</label>
+              <input
+                type="url"
+                [value]="mobileUrl()"
+                (input)="onMobileUrlChange($any($event.target).value)"
+                placeholder="https://ejemplo.com/mi-banner-mobile.jpg"
+                class="w-full px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition bg-gray-50 dark:bg-gray-900 dark:text-gray-200 dark:placeholder-gray-500 focus:bg-white dark:focus:bg-gray-800"/>
+            </div>
+            <div class="flex flex-col justify-end">
+              <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">O subir desde tu PC</label>
+              <div class="relative inline-block w-full sm:w-auto">
+                <button type="button" [disabled]="uploadingMobile()" class="w-full sm:w-auto px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-xl transition flex items-center justify-center gap-2">
+                  @if (uploadingMobile()) {
+                    <svg class="animate-spin w-4 h-4 text-brand-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+                    Subiendo...
+                  } @else {
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    Subir foto
+                  }
+                </button>
+                <input type="file" (change)="onMobileFileSelected($event)" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" [disabled]="uploadingMobile()">
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview -->
+          <div>
+            <p class="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wide">Vista previa</p>
+            @if (mobilePreview()) {
+              <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 max-w-xs">
+                <img
+                  [src]="mobilePreview()"
+                  alt="Banner mobile preview"
+                  (error)="onMobileError()"
+                  class="w-full object-cover max-h-64"/>
+              </div>
+            } @else {
+              <div class="rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 h-32 flex flex-col items-center justify-center gap-2 text-gray-300 dark:text-gray-600 max-w-xs">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <p class="text-xs">Pega una URL para ver la previsualización</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón guardar -->
+      <div class="flex justify-end pb-6">
+        <button
+          (click)="save()"
+          [disabled]="saving()"
+          class="bg-brand-500 hover:bg-brand-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200 flex items-center gap-2 shadow-sm shadow-brand-200">
+          @if (saving()) {
+            <svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+            Guardando...
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+            Guardar banners
+          }
+        </button>
+      </div>
+
+    }
+  </div>
+</div>

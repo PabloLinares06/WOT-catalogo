@@ -1,0 +1,151 @@
+<div class="min-h-screen relative flex items-center justify-center px-4 overflow-hidden
+            bg-[#080D14]">
+
+  <!-- Fondo decorativo: gradiente + formas abstractas -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <!-- Orbe aquamarine superior izquierdo -->
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full opacity-20"
+         style="background: radial-gradient(circle, #19B5A5 0%, transparent 70%);"></div>
+    <!-- Orbe verde inferior derecho -->
+    <div class="absolute -bottom-24 -right-24 w-80 h-80 rounded-full opacity-15"
+         style="background: radial-gradient(circle, #6EDB6E 0%, transparent 70%);"></div>
+    <!-- Orbe amarillo centro -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-5"
+         style="background: radial-gradient(circle, #F4C430 0%, transparent 60%);"></div>
+    <!-- Grid pattern sutil -->
+    <div class="absolute inset-0 opacity-[0.03]"
+         style="background-image: linear-gradient(rgba(25,181,165,0.8) 1px, transparent 1px),
+                                  linear-gradient(90deg, rgba(25,181,165,0.8) 1px, transparent 1px);
+                background-size: 40px 40px;"></div>
+  </div>
+
+  @if (checking()) {
+    <!-- Verificando sesión -->
+    <div class="text-white text-center z-10">
+      <div class="w-16 h-16 rounded-full bg-wot-gradient flex items-center justify-center mx-auto mb-4 animate-glow-pulse">
+        <svg class="animate-spin w-7 h-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+        </svg>
+      </div>
+      <p class="text-sm text-brand-300 font-medium">Verificando sesión...</p>
+    </div>
+  } @else {
+    <!-- Card glassmorphism -->
+    <div class="glass-dark rounded-3xl shadow-wot-card p-8 w-full max-w-md z-10 animate-card-enter">
+
+      <!-- Logo + título -->
+      <div class="text-center mb-8">
+        <div class="flex justify-center mb-5">
+          <img src="/logo-wot-energy-white.jpeg"
+               alt="WOT Energy Logo"
+               class="h-16 w-auto object-contain animate-float" />
+        </div>
+        <!-- Línea gradiente decorativa -->
+        <div class="h-0.5 w-20 bg-wot-gradient rounded-full mx-auto mb-3"></div>
+        <p class="text-[#6A8DAF] text-sm font-medium tracking-wide">Panel de Administración</p>
+      </div>
+
+      <!-- Aviso de sesión cerrada por inactividad -->
+      @if (inactivityWarning()) {
+        <div class="mb-6 bg-amber-900/20 border border-amber-700/50 text-amber-400 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+          </svg>
+          Sesión cerrada por inactividad. Vuelve a ingresar.
+        </div>
+      }
+
+      <!-- Form -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1.5">
+            Correo electrónico
+          </label>
+          <input
+            id="login-email"
+            type="email"
+            formControlName="email"
+            placeholder="admin@wot.com"
+            autocomplete="email"
+            class="w-full border border-[#1A3050] rounded-xl px-4 py-3 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500
+                   transition
+                   bg-[#0C1621] text-gray-200 placeholder-gray-600"/>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1.5">
+            Contraseña
+          </label>
+          <div class="relative">
+            <input
+              id="login-password"
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              class="w-full border border-[#1A3050] rounded-xl px-4 py-3 pr-11 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500
+                     transition
+                     bg-[#0C1621] text-gray-200"/>
+            <button type="button" (click)="showPassword.update(v => !v)"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-brand-400 transition">
+              @if (showPassword()) {
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                </svg>
+              } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+              }
+            </button>
+          </div>
+        </div>
+
+        <!-- Error -->
+        @if (error()) {
+          <div class="bg-red-900/20 border border-red-800/50 text-red-400 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            {{ error() }}
+          </div>
+        }
+
+        <!-- Submit -->
+        <button
+          id="login-submit-btn"
+          type="submit"
+          [disabled]="loading() || form.invalid"
+          class="w-full bg-wot-gradient
+                 disabled:opacity-40 disabled:cursor-not-allowed
+                 text-white font-bold py-3 rounded-xl
+                 transition-all duration-200
+                 hover:opacity-90 hover:shadow-wot-glow
+                 flex items-center justify-center gap-2 mt-2
+                 shadow-lg shadow-brand-500/20">
+          @if (loading()) {
+            <svg class="animate-spin w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+            Ingresando...
+          } @else {
+            Ingresar
+          }
+        </button>
+
+        <a routerLink="/"
+           class="block text-center text-[#6A8DAF] hover:text-brand-400 text-sm mt-2 transition-colors duration-200">
+          ← Volver al catálogo
+        </a>
+      </form>
+    </div>
+  }
+</div>

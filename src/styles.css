@@ -1,0 +1,479 @@
+/* ── Tipografía oficial WOT Energy: Montserrat + Poppins ── */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Variables de diseño WOT Energy (paleta oficial) ─────── */
+:root {
+  --wot-aquamarine: #19B5A5;
+  --wot-green:      #6EDB6E;
+  --wot-yellow:     #F4C430;
+  --wot-black:      #000000;
+  --wot-white:      #FFFFFF;
+
+  /* Escala de grises oscuros para dark mode */
+  --wot-dark:       #080D14;
+  --wot-dark-2:     #0C1621;
+  --wot-dark-3:     #111E30;
+  --wot-dark-4:     #182840;
+  --wot-dark-5:     #1F3352;
+  --wot-muted:      #6A8DAF;
+  --wot-border:     #1A3050;
+
+  --radius-card: 1.25rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+.no-transitions * {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* ── Base body ────────────────────────────────────────────── */
+body {
+  margin: 0;
+  background-color: #F8FAFC; /* Clean, premium slate-white background */
+  font-family: 'Montserrat', 'Poppins', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #0F172A; /* Slate-900 */
+}
+
+.dark body {
+  background-color: var(--wot-dark);
+  color: #F1F5F9; /* Slate-100 */
+}
+
+/* ── Scrollbar estilizada WOT ───────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #e8eef5; }
+::-webkit-scrollbar-thumb { background: #a8c0d6; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--wot-aquamarine); }
+
+.dark ::-webkit-scrollbar-track { background: var(--wot-dark-3); }
+.dark ::-webkit-scrollbar-thumb { background: var(--wot-dark-5); }
+.dark ::-webkit-scrollbar-thumb:hover { background: var(--wot-aquamarine); }
+
+/* ── Animación de entrada de rutas ─────────────────────── */
+router-outlet + * { animation: fadeIn 0.25s ease-out; }
+
+@layer utilities {
+  .animate-fade-in      { animation: fadeIn 0.3s ease-out; }
+  .animate-fade-in-slow { animation: fadeIn 0.65s ease-in-out; }
+  .animate-slide-up     { animation: slideUp 0.4s ease-out; }
+  .animate-stagger      { animation: slideUp 0.5s ease-out forwards; opacity: 0; }
+  .animate-toast-exit   { animation: slideDown 0.3s ease-in forwards; }
+  .animate-pulse-slow   { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+  .animate-glow-pulse   { animation: glowPulse 2.5s ease-in-out infinite; }
+  .animate-card-enter   { animation: cardEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .animate-float        { animation: float 3.5s ease-in-out infinite; }
+  .animate-pulse-scale  { animation: pulseScale 1.5s ease-in-out infinite; }
+
+  /* ── Gradiente oficial WOT: Aquamarine → Verde → Amarillo ── */
+  .bg-wot-gradient {
+    background: linear-gradient(135deg, #19B5A5 0%, #6EDB6E 55%, #F4C430 100%);
+  }
+  .bg-wot-gradient-h {
+    background: linear-gradient(90deg, #19B5A5 0%, #6EDB6E 60%, #F4C430 100%);
+  }
+  .text-wot-gradient {
+    background: linear-gradient(135deg, #19B5A5 0%, #6EDB6E 55%, #F4C430 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glassmorphism dark (sobre fondo oscuro WOT) */
+  .glass-dark {
+    background: rgba(12, 22, 33, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(25, 181, 165, 0.18);
+  }
+
+  /* Glassmorphism light */
+  .glass-light {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(25, 181, 165, 0.22);
+  }
+
+  /* Glow de acento aquamarine */
+  .wot-glow {
+    box-shadow: 0 0 22px 4px rgba(25, 181, 165, 0.25);
+  }
+  .wot-glow-hover:hover {
+    box-shadow: 0 0 26px 6px rgba(25, 181, 165, 0.4);
+    transition: box-shadow 0.3s ease;
+  }
+
+  /* Scrollbar hidden utility */
+  .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+}
+
+/* ── Keyframes ──────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(20px); }
+}
+@keyframes shimmer {
+  0%   { background-position: -1000px 0; }
+  100% { background-position:  1000px 0; }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 10px 0 rgba(25, 181, 165, 0.3); }
+  50%       { box-shadow: 0 0 24px 8px rgba(25, 181, 165, 0.55); }
+}
+@keyframes cardEnter {
+  from { opacity: 0; transform: scale(0.97) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+@keyframes pulseScale {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.15); }
+}
+
+/* ── Skeleton shimmer ─────────────────────────────────── */
+.skeleton {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(to right, #dde6f0 8%, #edf3f7 18%, #dde6f0 33%);
+  background-size: 1000px 100%;
+}
+.dark .skeleton {
+  background: linear-gradient(to right, #0C1621 8%, #182840 18%, #0C1621 33%);
+}
+
+/* ── Navbar ─────────────────────────────────────────────── */
+.navbar-scrolled {
+  background-color: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.1);
+}
+.dark .navbar-scrolled {
+  background-color: rgba(8, 13, 20, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* ── Product card backgrounds ─────────────────────────── */
+.product-card-bg {
+  background-image: none !important;
+  background-color: #FFFFFF !important;
+}
+.dark .product-card-bg {
+  background-image: none !important;
+  background-color: var(--wot-dark-2) !important;
+}
+
+@media (min-width: 600px) {
+  .product-card-bg {
+    background-image: none !important;
+  }
+  .dark .product-card-bg {
+    background-image: none !important;
+  }
+}
+@media (min-width: 1280px) {
+  .product-card-bg { background-size: none !important; }
+}
+
+/* ── Fondo exclusivo para Modo Kiosco en orientación VERTICAL ── */
+@media (orientation: portrait) {
+  body.kiosk-mode .product-card-bg {
+    background-image: none !important;
+    background-color: #FFFFFF !important;
+  }
+  .dark body.kiosk-mode .product-card-bg {
+    background-image: none !important;
+    background-color: var(--wot-dark-2) !important;
+  }
+}
+
+.product-img-container img { position: relative; z-index: 1; }
+.product-img-container { position: relative; }
+
+.product-img-detail::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: none;
+  background-color: #FFFFFF;
+  z-index: 0;
+  pointer-events: none;
+}
+.dark .product-img-detail::before {
+  background-image: none;
+  background-color: var(--wot-dark-2);
+}
+
+/* ═══════════════════════════════════════════════
+   MODO KIOSCO — Bloqueo de scroll y forzado de grid
+   La clase se añade/quita en <body> por KioskService
+════════════════════════════════════════════════ */
+body.kiosk-mode {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+/* Oculta herméticamente todos los accesorios globales para que el viewport tenga 0px extra */
+body.kiosk-mode app-navbar,
+body.kiosk-mode #kiosk-hide-banner,
+body.kiosk-mode #kiosk-hide-contacts,
+body.kiosk-mode #kiosk-hide-filters,
+body.kiosk-mode footer,
+body.kiosk-mode main > div.w-full {
+  display: none !important;
+}
+
+/* Ajusta el contenedor main para ocupar la pantalla menos la barra de estado + barra de filtros (~84px) */
+body.kiosk-mode main {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: calc(100vh - 84px) !important;
+  height: calc(100vh - 84px) !important;
+  padding: 0 !important;
+  margin: 84px auto 0 auto !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+  background-color: transparent !important;
+}
+
+/* Fuerza el contenedor de categorías a expandirse para centrar el producto */
+body.kiosk-mode main > div.space-y-10 {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 !important;
+  gap: 0 !important;
+}
+
+/* Oculta secciones de categoría no activas */
+body.kiosk-mode main section:not([data-kiosk-section-active]) {
+  display: none !important;
+}
+
+body.kiosk-mode main section[data-kiosk-section-active] {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Fuerza el grid a 1 sola columna y elimina gaps */
+body.kiosk-mode main section > .grid {
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Oculta los componentes host de productos adyacentes */
+body.kiosk-mode app-product-card:not([data-kiosk-host-active]) {
+  display: none !important;
+}
+
+body.kiosk-mode app-product-card[data-kiosk-host-active] {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Oculta los encabezados globales de categoría en modo Kiosco */
+body.kiosk-mode main section > div.flex.items-center.gap-3.mb-4 {
+  display: none !important;
+}
+
+/* ── Portrait: La tarjeta LLENA TODO el espacio disponible entre las dos barras y el indicador inferior ── */
+body.kiosk-mode [data-product-card] {
+  display: flex !important;
+  flex-direction: column !important;
+  touch-action: pan-y !important;
+  width: 96% !important;
+  max-width: 700px !important;
+  height: calc(100vh - 130px) !important;   /* Ocupa TODO el alto disponible */
+  max-height: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  border-radius: 1.5rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+}
+
+/* En portrait: imagen ocupa todo el espacio restante (flex-grow), sección de info compacta abajo */
+@media (orientation: portrait) {
+  /* La imagen crece para llenar el espacio libre */
+  body.kiosk-mode [data-product-card] .product-img-container {
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    position: relative !important;
+  }
+  body.kiosk-mode [data-product-card] .product-img-container img {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    padding: 1.25rem !important;
+  }
+  /* Sección de info: no crece, ocupa solo lo necesario, padding compacto */
+  body.kiosk-mode [data-product-card] > div {
+    flex-shrink: 0 !important;
+    padding: 1rem 1.25rem !important;
+    gap: 0.5rem !important;
+  }
+  /* Descripción más compacta */
+  body.kiosk-mode [data-product-card] > div > p {
+    -webkit-line-clamp: 2 !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Oculta de forma hermética y colapsa las tarjetas adyacentes si por alguna razón no se ocultó el host */
+body.kiosk-mode [data-product-card]:not([data-kiosk-active]) {
+  display: none !important;
+}
+
+/* Animación premium de entrada de la tarjeta de producto activa */
+body.kiosk-mode [data-product-card][data-kiosk-active] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  animation: kioskFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@keyframes kioskFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Estilización premium en modo horizontal: maximiza la tarjeta en formato horizontal (imagen a la izquierda, detalles a la derecha) */
+@media (orientation: landscape) {
+  body.kiosk-mode [data-product-card] {
+    width: calc(100vw - 150px) !important;
+    max-width: 1250px !important;
+    height: calc(100vh - 140px) !important; /* Ajusta la altura para los dos headers (estado + filtros) sin desbordar */
+    max-height: 480px !important;
+    min-height: 360px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    flex-direction: row !important; /* Imagen a la izquierda, textos a la derecha */
+    align-items: stretch !important;
+    overflow: hidden !important;
+  }
+
+  /* Mitad izquierda: Contenedor de la Imagen (Aumentado a 62% para protagonismo absoluto) */
+  body.kiosk-mode [data-product-card] .product-img-container {
+    width: 62% !important;
+    height: 100% !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Imagen del producto dentro del contenedor */
+  body.kiosk-mode [data-product-card] .product-img-container img {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    padding: 1rem !important; /* Padding optimizado para maximizar el tamaño de la imagen */
+  }
+
+  /* Mitad derecha: Contenedor de Información y Controles (Reducido a 38%) */
+  body.kiosk-mode [data-product-card] > div {
+    width: 38% !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 1.25rem !important; /* Padding ligeramente menor para maximizar el espacio del contenido */
+    overflow-y: auto !important; /* Si el texto es muy largo, tiene scroll interno propio */
+    box-sizing: border-box !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Título del producto */
+  body.kiosk-mode [data-product-card] > div > a {
+    margin-bottom: 0 !important;
+    font-size: 1.15rem !important; /* Ligeramente más compacto y elegante */
+    line-height: 1.25 !important;
+  }
+
+  /* Empuja el separador, precio y controles al fondo de la columna */
+  body.kiosk-mode [data-product-card] > div > .border-t {
+    margin-top: auto !important;
+    padding-top: 0.5rem !important;
+  }
+
+  /* Optimización para que los botones de cantidad y el precio entren perfectamente lado a lado en el 38% de ancho */
+  body.kiosk-mode [data-product-card] > div .w-9,
+  body.kiosk-mode [data-product-card] > div .sm\:w-11 {
+    width: 2.15rem !important; /* w-8.5 (34px) */
+    height: 2.15rem !important;
+    font-size: 0.875rem !important; /* text-sm */
+  }
+
+  body.kiosk-mode [data-product-card] > div input {
+    width: 2.25rem !important; /* w-9 (36px) */
+    height: 2.15rem !important;
+    font-size: 0.875rem !important; /* text-sm */
+  }
+}
+
+body.kiosk-mode app-product-card article:not([data-product-card]) {
+  display: none !important;
+}

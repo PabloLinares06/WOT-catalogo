@@ -1,0 +1,277 @@
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+
+  <!-- Topbar -->
+  <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40 transition-colors duration-300">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a routerLink="/admin"
+           class="p-2 text-gray-400 dark:text-gray-500 hover:text-brand-500 dark:hover:text-brand-300 hover:bg-brand-50 dark:hover:bg-brand-900/40 rounded-xl transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+        </a>
+        <div class="flex items-center gap-2">
+          <img src="/logo-wot-energy.png" alt="WOT Energy Logo" class="h-8 w-auto object-contain" />
+          <span class="text-gray-800 dark:text-gray-100 font-semibold text-sm">
+            Gestión de Categorías
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-4xl mx-auto px-4 py-8">
+
+    @if (loading()) {
+      <div class="space-y-3">
+        @for (i of [1,2,3,4,5]; track i) {
+          <div class="bg-white dark:bg-gray-800 rounded-xl h-16 animate-pulse border border-gray-100 dark:border-gray-700"></div>
+        }
+      </div>
+    } @else {
+
+      <!-- Header con botón crear -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Categorías</h1>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Ordena y gestiona las categorías del catálogo</p>
+        </div>
+
+        @if (!showNewCategoryInput()) {
+          <button (click)="toggleNewCategoryInput()" type="button"
+            class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-4 py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm w-full sm:w-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+            </svg>
+            Nueva categoría
+          </button>
+        }
+      </div>
+
+      <!-- Campo para nueva categoría -->
+      @if (showNewCategoryInput()) {
+        <div class="mb-6 p-4 bg-brand-50 dark:bg-brand-900/20 rounded-xl border border-brand-200 dark:border-brand-700">
+          <label class="block text-sm font-semibold text-brand-600 dark:text-brand-400 mb-2">Nueva categoría</label>
+          <div class="flex gap-2">
+            <input
+              type="text"
+              [(ngModel)]="newCategoryName"
+              (keydown.enter)="addNewCategory()"
+              placeholder="Ej: Accesorios Gaming"
+              class="flex-1 border border-brand-200 dark:border-brand-600 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition bg-white dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-500 min-w-0"/>
+            <button type="button" (click)="addNewCategory()" [disabled]="!newCategoryName().trim() || savingNewCategory()"
+              class="flex-shrink-0 bg-brand-500 hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold px-4 py-2.5 rounded-lg transition">
+              @if (savingNewCategory()) {
+                <span>...</span>
+              } @else {
+                <span class="hidden sm:inline">Guardar</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                </svg>
+              }
+            </button>
+            <button type="button" (click)="toggleNewCategoryInput()"
+              class="flex-shrink-0 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Lista de categorías -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
+
+        <!-- Header tabla (Desktop) -->
+        <div class="hidden sm:grid grid-cols-12 gap-4 px-5 py-3 bg-gray-50 dark:bg-gray-900/50 border-b border-gray-100 dark:border-gray-700 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+          <div class="col-span-2">Orden</div>
+          <div class="col-span-7">Nombre</div>
+          <div class="col-span-2 text-center">Tipo</div>
+          <div class="col-span-1 text-right">Acción</div>
+        </div>
+
+        <!-- Filas -->
+        <div class="divide-y divide-gray-100 dark:divide-gray-700">
+          @for (cat of categories(); track cat.id) {
+            <div class="group flex flex-col sm:grid sm:grid-cols-12 gap-3 sm:gap-4 px-4 sm:px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-900/30 transition items-start sm:items-center">
+
+              <!-- Móvil Header (Nombre + Acciones) -->
+              <div class="flex items-center justify-between w-full sm:hidden">
+                @if (editingCategoryId() === cat.id) {
+                  <div class="flex items-center gap-1.5 w-full mr-2">
+                    <input type="text"
+                           [(ngModel)]="editingCategoryName"
+                           (keydown.enter)="saveRename(cat)"
+                           (keydown.escape)="cancelEdit()"
+                           [disabled]="savingRename()"
+                           class="flex-1 text-sm border border-brand-300 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white dark:bg-gray-700 dark:text-gray-200 min-w-0" />
+                    <button type="button" (click)="saveRename(cat)" [disabled]="savingRename() || !editingCategoryName().trim()"
+                            class="text-green-500 hover:text-green-600 dark:hover:text-green-400 p-1.5 rounded-lg hover:bg-green-50 dark:hover:bg-green-950/20">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    </button>
+                    <button type="button" (click)="cancelEdit()" [disabled]="savingRename()"
+                            class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/40">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                      </svg>
+                    </button>
+                  </div>
+                } @else {
+                  <span class="text-sm font-bold text-gray-800 dark:text-gray-100">{{ cat.name }}</span>
+                  <div class="flex items-center gap-1">
+                    <button type="button" (click)="startEdit(cat)"
+                            class="text-brand-500 hover:text-brand-600 p-1.5 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-900/20"
+                            title="Editar nombre">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                      </svg>
+                    </button>
+                    @if (cat.isOriginal) {
+                      <span class="inline-flex items-center gap-1 text-[10px] font-semibold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">
+                        Original
+                      </span>
+                    } @else {
+                      <button type="button" (click)="deleteCategory(cat.id, cat.name)"
+                        [disabled]="deletingCategoryId() === cat.id"
+                        class="text-red-400 hover:text-red-600 dark:hover:text-red-300 disabled:opacity-40 transition p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
+                        @if (deletingCategoryId() === cat.id) {
+                          <span class="text-xs">...</span>
+                        } @else {
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                          </svg>
+                        }
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+
+              <!-- Orden (Desktop & Mobile) -->
+              <div class="col-span-2 flex items-center gap-2 w-full sm:w-auto">
+                <span class="text-xs text-gray-500 sm:hidden">Orden:</span>
+                <input
+                  type="number"
+                  [value]="cat.order"
+                  (change)="updateOrder(cat.id, +$any($event.target).value)"
+                  min="1"
+                  class="w-20 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-sm font-bold text-brand-500 dark:text-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white dark:bg-gray-700 dark:text-gray-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"/>
+              </div>
+
+              <!-- Nombre (Desktop) -->
+              <div class="col-span-7 hidden sm:flex items-center gap-2 min-w-0">
+                @if (editingCategoryId() === cat.id) {
+                  <div class="flex items-center gap-1.5 w-full">
+                    <input type="text"
+                           [(ngModel)]="editingCategoryName"
+                           (keydown.enter)="saveRename(cat)"
+                           (keydown.escape)="cancelEdit()"
+                           [disabled]="savingRename()"
+                           class="flex-1 text-sm border border-brand-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white dark:bg-gray-700 dark:text-gray-200 min-w-0" />
+                    <button type="button" (click)="saveRename(cat)" [disabled]="savingRename() || !editingCategoryName().trim()"
+                            class="text-green-500 hover:text-green-600 dark:hover:text-green-400 p-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-950/20"
+                            title="Guardar">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    </button>
+                    <button type="button" (click)="cancelEdit()" [disabled]="savingRename()"
+                            class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/40"
+                            title="Cancelar">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                      </svg>
+                    </button>
+                  </div>
+                } @else {
+                  <span class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate">{{ cat.name }}</span>
+                  <button type="button" (click)="startEdit(cat)"
+                          class="opacity-0 group-hover:opacity-100 focus:opacity-100 text-brand-500 hover:text-brand-600 p-1.5 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-opacity duration-200"
+                          title="Editar nombre">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                    </svg>
+                  </button>
+                }
+              </div>
+
+              <!-- Tipo (Desktop) -->
+              <div class="col-span-2 hidden sm:flex justify-center">
+                @if (cat.isOriginal) {
+                  <span class="inline-flex items-center gap-1 text-xs font-semibold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    Original
+                  </span>
+                } @else {
+                  <span class="inline-flex items-center gap-1 text-xs font-semibold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 px-2.5 py-1 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                    </svg>
+                    Personalizada
+                  </span>
+                }
+              </div>
+
+              <!-- Acción (Desktop) -->
+              <div class="col-span-1 hidden sm:flex justify-end">
+                @if (!cat.isOriginal) {
+                  <button type="button" (click)="deleteCategory(cat.id, cat.name)"
+                    [disabled]="deletingCategoryId() === cat.id"
+                    class="text-red-400 hover:text-red-600 dark:hover:text-red-300 disabled:opacity-40 transition p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
+                    @if (deletingCategoryId() === cat.id) {
+                      <span class="text-xs">...</span>
+                    } @else {
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                      </svg>
+                    }
+                  </button>
+                } @else {
+                  <div class="w-9 h-9"></div>
+                }
+              </div>
+
+            </div>
+          }
+        </div>
+
+        @if (categories().length === 0) {
+          <div class="px-5 py-12 text-center text-gray-400 dark:text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+            </svg>
+            <p class="text-sm">No hay categorías aún</p>
+          </div>
+        }
+
+      </div>
+
+      <!-- Info -->
+      <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-700">
+        <div class="flex gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <div class="text-sm text-blue-700 dark:text-blue-300">
+            <p class="font-semibold mb-1">Información importante:</p>
+            <ul class="space-y-1 text-xs">
+              <li>• Las categorías <strong>originales</strong> (badge gris) no se pueden eliminar, pero <strong>sí reordenar</strong></li>
+              <li>• Las categorías <strong>personalizadas</strong> (badge morado) se pueden reordenar y eliminar</li>
+              <li>• El catálogo mostrará los productos ordenados según el número de orden de su categoría</li>
+              <li>• Cambia el número de orden y se guardará automáticamente</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    }
+
+  </div>
+
+</div>

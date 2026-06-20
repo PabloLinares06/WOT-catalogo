@@ -1,0 +1,44 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Category {
+  id         String    @id
+  name       String    @unique
+  order      Int       @default(0)
+  isOriginal Boolean   @default(false)
+  products   Product[]
+}
+
+model Product {
+  id             String   @id @default(uuid())
+  reference      String   @unique
+  name           String
+  description    String?
+  price          Decimal  @db.Decimal(10, 2)
+  imageUrl       String
+  images         String[]
+  categoryId     String
+  category       Category @relation(fields: [categoryId], references: [id])
+  isActive       Boolean  @default(true)
+  order          Int      @default(0)
+  hasObservation Boolean  @default(false)
+}
+
+model Banner {
+  id         Int    @id @default(autoincrement())
+  desktopUrl String
+  mobileUrl  String
+}
+
+model User {
+  id           String @id @default(uuid())
+  email        String @unique
+  passwordHash String
+  role         String @default("admin")
+}

@@ -1,0 +1,8 @@
+node_modules
+dist
+.firebase
+.git
+*.md
+.env
+.env.*
+backend

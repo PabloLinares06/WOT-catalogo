@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>WOT S.A.S. — Accesorios y Soluciones Tecnológicas</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Catálogo de productos tecnológicos WOT S.A.S. Realiza tu pedido vía WhatsApp.">
+  <meta name="author" content="WOT S.A.S.">
+  <meta name="theme-color" content="#0A2540">
+
+  <!-- Open Graph / redes sociales (WhatsApp usa estos) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WOT S.A.S. — Accesorios y Soluciones Tecnológicas">
+  <meta property="og:description" content="Catálogo de productos tecnológicos WOT S.A.S. Realiza tu pedido vía WhatsApp.">
+  <!-- TODO: og:image — reemplazar con URL pública de imagen WOT cuando esté disponible -->
+  <!-- <meta property="og:image" content="https://wot.com/og-image.png"> -->
+  <meta property="og:locale" content="es_CO">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="WOT S.A.S.">
+  <meta name="twitter:description" content="Catálogo de productos tecnológicos WOT S.A.S. Realiza tu pedido vía WhatsApp.">
+
+  <link rel="icon" type="image/jpeg" href="logo.jpeg">
+  <link rel="apple-touch-icon" href="logo.jpeg">
+
+  <!-- Preconnect Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Anti-flash dark mode script -->
+  <script>
+    (function() {
+      var stored = localStorage.getItem('wot-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+<body class="bg-white dark:bg-gray-900">
+  <app-root></app-root>
+</body>
+</html>

@@ -1,0 +1,77 @@
+# =============================================
+# WOT S.A.S. — .gitignore
+# =============================================
+
+# ── Compilados y builds ─────────────────────
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# ── Node & dependencias ─────────────────────
+/node_modules
+backend/node_modules
+npm-debug.log
+yarn-error.log
+
+# ── Angular cache ────────────────────────────
+/.angular/cache
+.sass-cache/
+
+# ── Variables de entorno — NUNCA subir ──────
+.env
+backend/.env
+*.env.local
+*.env.production
+*.env.staging
+
+# ── Archivos de credenciales — NUNCA subir ──
+serviceAccountKey.json
+*.pem
+*.key
+*.cert
+
+# ── Firebase (ya no se usa) ─────────────────
+.firebase/
+.firebaserc
+
+# ── IDEs y editores ──────────────────────────
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.history/*
+
+# ── Sistema operativo ────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Logs ─────────────────────────────────────
+*.log
+/coverage
+/connect.lock
+/libpeerconnection.log
+testem.log
+
+# ── Temporales ───────────────────────────────
+/typings
+__screenshots__/
+backup-gemini/
+*.tar.gz
+build_check.txt
+build_output.txt
+serve_log.txt
+install_log.txt
+install_log2.txt
+
+# ── Backend: uploads locales (van a DO Spaces en prod) ──
+backend/public/uploads/
