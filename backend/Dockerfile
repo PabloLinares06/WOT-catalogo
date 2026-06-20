@@ -13,6 +13,9 @@ RUN npm run build
 # Production stage
 FROM node:20-alpine AS production
 
+# Install OpenSSL for Prisma query engine on Alpine
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 # Copy package files
@@ -29,9 +32,10 @@ COPY prisma ./prisma
 # Copy built application
 COPY --from=builder /app/dist ./dist
 
-# Create non-root user
+# Create non-root user and change directory ownership
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nestjs -u 1001
+    adduser -S nestjs -u 1001 && \
+    chown -R nestjs:nodejs /app
 
 USER nestjs
 
