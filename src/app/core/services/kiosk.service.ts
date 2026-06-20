@@ -32,16 +32,15 @@ export class KioskService {
   private isScrolling = false;
 
   constructor() {
-    // Escucha cambios de viewport y combina con detección de pantalla táctil
+    // Escucha cambios de viewport (cualquier pantalla >= 480px, incluyendo tablets y PCs)
     this.breakpoints
-      .observe(['(min-width: 480px) and (max-width: 1399px)'])
+      .observe(['(min-width: 480px)'])
       .pipe(takeUntilDestroyed())
       .subscribe(result => {
-        const isTabletDevice = result.matches && this.hasTouchSupport();
+        const isTabletDevice = result.matches;
         this.isTablet.set(isTabletDevice);
         
         if (!isTabletDevice && this.kioskEnabled()) {
-          // Si se sale del rango tablet o pierde soporte táctil, desactivar kiosco
           this.disableKiosk();
         }
       });

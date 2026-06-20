@@ -33,10 +33,7 @@
       </div>
     }
 
-    <!-- Badges -->
-    <span class="absolute top-2.5 left-2.5 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-brand-500 dark:text-brand-400 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm border border-brand-100 dark:border-brand-600">
-      {{ product.category }}
-    </span>
+
     @if (product.stock !== undefined) {
       <span class="absolute top-2.5 right-2.5 text-xs font-semibold px-2.5 py-1 rounded-full"
             [class]="product.stock > 5 ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' : product.stock > 0 ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400' : 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400'">
@@ -176,7 +173,7 @@
 
   <div
     [class.product-bg-dark]="themeService.isDark()"
-    class="product-img-container product-card-bg relative overflow-hidden h-44 flex-shrink-0">
+    class="product-img-container product-card-bg card-img-container relative overflow-hidden flex-shrink-0">
 
     <a data-routerlink="['/product', product.id]" (click)="$event.preventDefault(); $event.stopPropagation()" class="absolute inset-0 z-0 block"></a>
 
@@ -207,10 +204,7 @@
     }
 
 
-    <!-- Badges -->
-    <span class="absolute top-2 left-2 z-10 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-brand-500 dark:text-brand-400 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm border border-brand-100 dark:border-brand-600 pointer-events-none">
-      {{ product.category }}
-    </span>
+
     @if (product.stock !== undefined) {
       <span class="absolute top-2 right-2 z-10 text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none"
             [class]="product.stock > 5 ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400' : product.stock > 0 ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400' : 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400'">

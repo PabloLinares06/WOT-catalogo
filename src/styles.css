@@ -182,36 +182,86 @@ router-outlet + * { animation: fadeIn 0.25s ease-out; }
 }
 
 /* ── Product card backgrounds ─────────────────────────── */
+/* ── Celular Vertical / Base ── */
 .product-card-bg {
-  background-image: none !important;
-  background-color: #FFFFFF !important;
-}
-.dark .product-card-bg {
-  background-image: none !important;
-  background-color: var(--wot-dark-2) !important;
+  background-image: url('/fondo-producto-claro.png') !important; /* 1700x1700 px */
+  background-size: contain !important; /* Muestra el fondo completo sin recortar nada */
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-color: #f1f5f9 !important;
 }
 
-@media (min-width: 600px) {
+.dark .product-card-bg {
+  background-image: url('/fondo-producto-oscuro.png') !important;
+  background-color: #0f172a !important;
+}
+
+/* Contenedor de proporción adaptada */
+.card-img-container {
+  width: 100% !important;
+  aspect-ratio: 1920 / 1200 !important; /* Proporción estándar de PC (1.6:1) */
+  height: auto !important;
+}
+
+/* ── Tablets (600px - 1399px) en Vertical ── */
+@media (min-width: 600px) and (max-width: 1399px) and (orientation: portrait) {
   .product-card-bg {
-    background-image: none !important;
+    background-image: url('/fondo-producto-claro-tablet-vertical.png') !important; /* 2000x1000 px */
   }
   .dark .product-card-bg {
-    background-image: none !important;
+    background-image: url('/fondo-producto-oscuro-tablet-vertical.png') !important;
   }
-}
-@media (min-width: 1280px) {
-  .product-card-bg { background-size: none !important; }
+  .card-img-container {
+    aspect-ratio: 2000 / 1000 !important; /* Relación de aspecto 2:1 */
+    height: auto !important;
+  }
 }
 
-/* ── Fondo exclusivo para Modo Kiosco en orientación VERTICAL ── */
-@media (orientation: portrait) {
+/* ── Tablets (600px - 1399px) en Horizontal ── */
+@media (min-width: 600px) and (max-width: 1399px) and (orientation: landscape) {
+  .product-card-bg {
+    background-image: url('/fondo-producto-claro-tablet-horizontal.png') !important; /* 1920x780 px */
+  }
+  .dark .product-card-bg {
+    background-image: url('/fondo-producto-oscuro-tablet-horizontal.png') !important;
+  }
+  .card-img-container {
+    aspect-ratio: 1920 / 780 !important; /* Relación de aspecto 2.46:1 */
+    height: auto !important;
+  }
+}
+
+/* ── PC / Escritorio (>= 1400px) ── */
+@media (min-width: 1400px) {
+  .product-card-bg {
+    background-image: url('/fondo-producto-claro-grande.png') !important; /* 1920x1200 px */
+  }
+  .dark .product-card-bg {
+    background-image: url('/fondo-producto-oscurio-grande.png') !important;
+  }
+  .card-img-container {
+    aspect-ratio: 1920 / 1200 !important; /* Relación de aspecto 1.6:1 (8:5) */
+    height: auto !important;
+  }
+}
+
+/* ── Modo Kiosco Horizontal (Tablet Horizontal y PC) ── */
+@media (orientation: landscape) {
   body.kiosk-mode .product-card-bg {
-    background-image: none !important;
-    background-color: #FFFFFF !important;
+    background-image: url('/fondo-producto-claro-grande.png') !important;
   }
   .dark body.kiosk-mode .product-card-bg {
-    background-image: none !important;
-    background-color: var(--wot-dark-2) !important;
+    background-image: url('/fondo-producto-oscurio-grande.png') !important;
+  }
+}
+
+/* ── Modo Kiosco Vertical (Tablet Vertical) ── */
+@media (orientation: portrait) {
+  body.kiosk-mode .product-card-bg {
+    background-image: url('/fondo-kiosko-vertical-claro.png') !important; /* Recomendado: 1200x1800 px */
+  }
+  .dark body.kiosk-mode .product-card-bg {
+    background-image: url('/fondo-kiosko-vertical-oscuro.png') !important;
   }
 }
 
