@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 
         <!-- Logo -->
         <div class="mb-8 flex justify-center">
-          <img src="/logo-wot-energy.png" alt="WOT Energy Logo" class="h-20 w-auto object-contain dark:brightness-0 dark:invert" />
+          <img src="/logo-wot-energy.png?v=2" alt="WOT Energy Logo" class="h-20 w-auto object-contain dark:brightness-0 dark:invert" />
         </div>
 
         <!-- Ícono herramienta -->
