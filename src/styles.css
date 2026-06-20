@@ -237,7 +237,7 @@ router-outlet + * { animation: fadeIn 0.25s ease-out; }
     background-image: url('/fondo-producto-claro-grande.png') !important; /* 1920x1200 px */
   }
   .dark .product-card-bg {
-    background-image: url('/fondo-producto-oscurio-grande.png') !important;
+    background-image: url('/fondo-producto-oscuro-grande.png') !important;
   }
   .card-img-container {
     aspect-ratio: 1920 / 1200 !important; /* Relación de aspecto 1.6:1 (8:5) */
@@ -251,7 +251,7 @@ router-outlet + * { animation: fadeIn 0.25s ease-out; }
     background-image: url('/fondo-producto-claro-grande.png') !important;
   }
   .dark body.kiosk-mode .product-card-bg {
-    background-image: url('/fondo-producto-oscurio-grande.png') !important;
+    background-image: url('/fondo-producto-oscuro-grande.png') !important;
   }
 }
 
