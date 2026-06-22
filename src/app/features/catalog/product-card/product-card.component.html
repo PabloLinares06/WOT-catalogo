@@ -2,8 +2,7 @@
 <article data-product-card class="xl:hidden bg-white dark:bg-[#0C1621] rounded-2xl overflow-hidden flex flex-col group border border-slate-100/60 dark:border-wot-border/40 shadow-[0_4px_16px_rgba(0,0,0,0.03)] dark:shadow-none hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-all duration-300 animate-fade-in">
 
   <!-- Imagen / mini carrusel -->
-  <a data-routerlink="['/product', product.id]"
-     (click)="$event.preventDefault(); $event.stopPropagation()"
+  <a [routerLink]="['/product', product.id]"
      [class.product-bg-dark]="themeService.isDark()"
      class="product-img-container product-card-bg relative block w-full cursor-pointer overflow-hidden aspect-square sm:aspect-[2/1] max-h-[40vh] sm:max-h-[35vh]">
 
@@ -71,8 +70,7 @@
 
   <!-- Info -->
   <div class="flex flex-col p-5 sm:p-6 gap-4">
-    <a data-routerlink="['/product', product.id]"
-       (click)="$event.preventDefault(); $event.stopPropagation()"
+    <a [routerLink]="['/product', product.id]"
        class="font-bold text-gray-800 dark:text-gray-100 text-xl leading-snug hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200 cursor-pointer">
       {{ product.name }}
     </a>
@@ -175,7 +173,7 @@
     [class.product-bg-dark]="themeService.isDark()"
     class="product-img-container product-card-bg card-img-container relative overflow-hidden flex-shrink-0">
 
-    <a data-routerlink="['/product', product.id]" (click)="$event.preventDefault(); $event.stopPropagation()" class="absolute inset-0 z-0 block"></a>
+    <a [routerLink]="['/product', product.id]" class="absolute inset-0 z-0 block"></a>
 
     <!-- Skeleton loader para imágenes DESKTOP -->
     @if (imageLoading() && currentImgUrl()) {
@@ -243,7 +241,7 @@
   </div>
 
   <div class="p-4 flex flex-col flex-1">
-    <a data-routerlink="['/product', product.id]" (click)="$event.preventDefault(); $event.stopPropagation()"
+    <a [routerLink]="['/product', product.id]"
        class="font-semibold text-gray-800 dark:text-gray-100 text-sm leading-snug line-clamp-2 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-200 cursor-pointer h-10 mb-2">
       {{ product.name }}
     </a>

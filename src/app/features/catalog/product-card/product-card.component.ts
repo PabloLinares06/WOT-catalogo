@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, input, output, inject, computed, signal } from '@angular/core';
 import { Product } from '../../../core/models/product.model';
 import { CurrencyPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
 import { ThemeService } from '../../../core/services/theme.service';
 
@@ -8,7 +9,7 @@ import { ThemeService } from '../../../core/services/theme.service';
   selector: 'app-product-card',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, RouterLink],
   templateUrl: './product-card.component.html'
 })
 export class ProductCardComponent {
