@@ -37,9 +37,18 @@ export class UploadService {
     this.bucket = this.configService.get<string>('DO_SPACES_BUCKET');
     this.cdnUrl = this.configService.get<string>('DO_SPACES_CDN_URL');
 
+    // Extract region from endpoint (e.g. https://nyc3.digitaloceanspaces.com -> nyc3)
+    let region = 'us-east-1';
+    if (endpoint) {
+      const match = endpoint.match(/https?:\/\/([^.]+)\.digitaloceanspaces\.com/);
+      if (match) {
+        region = match[1];
+      }
+    }
+
     this.s3Client = new S3Client({
       endpoint,
-      region: 'us-east-1', // DigitalOcean Spaces requires a region value
+      region,
       credentials: {
         accessKeyId,
         secretAccessKey,
