@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 
-const SESSION_KEY = 'natec_catalog_session';
+const SESSION_KEY = 'wot_catalog_session';
 const SESSION_TTL_MS = 72 * 60 * 60 * 1000; // 72 horas
 
 interface SessionData {
