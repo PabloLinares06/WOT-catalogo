@@ -16,15 +16,12 @@ export class CartService {
   referenceCount = computed(() => this.items().length);
 
   /**
-   * Calcula el total considerando si aplica el precio mayorista (bulkPrice)
-   * según la cantidad de cada producto.
+   * Calcula el total multiplicando el precio de cada producto por su cantidad.
    */
   total = computed(() =>
     this.items().reduce((acc, item) => {
       const { product, quantity } = item;
-      const isBulkActive = !!product.bulkMinQty && !!product.bulkPrice && quantity >= product.bulkMinQty;
-      const priceToUse = isBulkActive ? product.bulkPrice! : product.price;
-      return acc + (priceToUse * quantity);
+      return acc + (product.price * quantity);
     }, 0)
   );
 

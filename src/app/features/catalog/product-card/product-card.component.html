@@ -85,21 +85,10 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 mt-1 border-t border-gray-100 dark:border-gray-700">
       <div>
         <!-- Precio activo -->
-        <span class="font-extrabold text-3xl leading-none transition-colors duration-200"
-          [class]="isBulkActive() ? 'text-purple-600 dark:text-purple-400' : 'text-brand-500 dark:text-brand-400'">
-          {{ activePrice() | currency:'COP':'$':'1.0-0' }}
+        <span class="font-extrabold text-3xl leading-none transition-colors duration-200 text-brand-500 dark:text-brand-400">
+          {{ product.price | currency:'COP':'$':'1.0-0' }}
         </span>
-        @if (isBulkActive()) {
-          <span class="ml-2 text-xs line-through text-gray-400 dark:text-gray-500">{{ product.price | currency:'COP':'$':'1.0-0' }}</span>
-          <p class="text-purple-500 dark:text-purple-400 text-xs font-semibold mt-1">🏷 Precio mayorista activo</p>
-        } @else {
-          <p class="text-gray-400 dark:text-gray-500 text-sm mt-1.5">por unidad</p>
-          @if (product.bulkMinQty && product.bulkPrice) {
-            <p class="mt-1.5 text-xs font-semibold text-purple-600 dark:text-purple-300 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 px-2.5 py-1 rounded-lg inline-block">
-              Paquete x{{ product.bulkMinQty }} → {{ product.bulkPrice | currency:'COP':'$':'1.0-0' }} c/u
-            </p>
-          }
-        }
+        <p class="text-gray-400 dark:text-gray-500 text-sm mt-1.5">por unidad</p>
       </div>
 
       @if (quantity() === 0) {
@@ -256,21 +245,10 @@
     <div class="mt-auto pt-2 border-t border-gray-50 dark:border-gray-700 flex flex-col gap-2">
       <div class="flex items-center justify-between">
         <div>
-          <span class="font-extrabold text-base leading-none transition-colors duration-200"
-            [class]="isBulkActive() ? 'text-purple-600 dark:text-purple-400' : 'text-brand-500 dark:text-brand-400'">
-            {{ activePrice() | currency:'COP':'$':'1.0-0' }}
+          <span class="font-extrabold text-base leading-none transition-colors duration-200 text-brand-500 dark:text-brand-400">
+            {{ product.price | currency:'COP':'$':'1.0-0' }}
           </span>
-          @if (isBulkActive()) {
-            <span class="ml-1 text-xs line-through text-gray-400">{{ product.price | currency:'COP':'$':'1.0-0' }}</span>
-            <p class="text-purple-500 dark:text-purple-400 text-[10px] font-semibold mt-0.5">🏷 Mayorista</p>
-          } @else {
-            <p class="text-gray-300 dark:text-gray-600 text-xs mt-0.5">por unidad</p>
-            @if (product.bulkMinQty && product.bulkPrice) {
-              <p class="mt-1 text-[10px] font-semibold text-purple-600 dark:text-purple-300 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 px-2 py-0.5 rounded-md inline-block">
-                Paquete x{{ product.bulkMinQty }} → {{ product.bulkPrice | currency:'COP':'$':'1.0-0' }} c/u
-              </p>
-            }
-          }
+          <p class="text-gray-300 dark:text-gray-600 text-xs mt-0.5">por unidad</p>
         </div>
 
         @if (quantity() === 0) {

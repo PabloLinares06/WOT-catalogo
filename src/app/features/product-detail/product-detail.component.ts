@@ -77,17 +77,7 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  // ── Precio por volumen ──
-  isBulkActive = computed(() => {
-    const p = this.product();
-    return !!p?.bulkMinQty && !!p?.bulkPrice && this.quantity() >= p.bulkMinQty;
-  });
 
-  activePrice = computed(() => {
-    const p = this.product();
-    if (!p) return 0;
-    return this.isBulkActive() ? p.bulkPrice! : p.price;
-  });
 
   // ── Cantidad ──
   incrementQty(): void {

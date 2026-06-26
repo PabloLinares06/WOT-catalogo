@@ -100,17 +100,7 @@ export class ProductCardComponent {
     return item ? item.quantity : 0;
   });
 
-  /** true cuando la cantidad actual activa el precio mayorista */
-  isBulkActive = computed(() =>
-    !!this.product.bulkMinQty &&
-    !!this.product.bulkPrice &&
-    this.quantity() >= this.product.bulkMinQty!
-  );
 
-  /** Precio por unidad vigente según la cantidad en carrito */
-  activePrice = computed(() =>
-    this.isBulkActive() ? this.product.bulkPrice! : this.product.price
-  );
 
   increase(): void {
     this.cartService.addToCart(this.product);

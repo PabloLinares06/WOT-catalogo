@@ -64,13 +64,9 @@
               <p class="text-xs text-brand-500 dark:text-brand-400 font-mono mt-0.5">Ref: {{ item.product.reference }}</p>
             }
             <div class="flex items-center gap-2 mt-1">
-              @let isBulk = item.product.bulkMinQty && item.product.bulkPrice && item.quantity >= item.product.bulkMinQty;
-              <span class="font-bold text-sm" [class]="isBulk ? 'text-purple-600 dark:text-purple-400' : 'text-brand-500 dark:text-brand-400'">
-                {{ (isBulk ? item.product.bulkPrice! : item.product.price) | currency:'$':'symbol':'1.0-0' }}
+              <span class="font-bold text-sm text-brand-500 dark:text-brand-400">
+                {{ item.product.price | currency:'$':'symbol':'1.0-0' }}
               </span>
-              @if (isBulk) {
-                <span class="text-[10px] bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 px-1.5 py-0.5 rounded font-bold uppercase">Mayorista</span>
-              }
             </div>
           </div>
 

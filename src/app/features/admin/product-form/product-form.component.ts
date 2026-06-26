@@ -55,9 +55,7 @@ export class ProductFormComponent implements OnInit {
     imageUrl: [''],
     isActive: [true],
     hasObservation: [true],
-    stock: [null as number | null],
-    bulkMinQty: [null as number | null],
-    bulkPrice: [null as number | null]
+    stock: [null as number | null]
   });
 
   ngOnInit(): void {
@@ -77,9 +75,7 @@ export class ProductFormComponent implements OnInit {
             ...product as any,
             category: product.categoryId || '',
             hasObservation: product.hasObservation ?? true,
-            stock: product.stock ?? null,
-            bulkMinQty: product.bulkMinQty ?? null,
-            bulkPrice: product.bulkPrice ?? null
+            stock: product.stock ?? null
           });
           this.imagePreview.set(product.imageUrl || null);
           if (product.images && product.images.length > 0) {
@@ -301,9 +297,6 @@ export class ProductFormComponent implements OnInit {
       const stock = this.form.value.stock;
       const stockValue = (stock !== null && stock !== undefined && String(stock).trim() !== '') ? Number(stock) : null;
 
-      const bulkMinQty = (this.form.value.bulkMinQty !== null && String(this.form.value.bulkMinQty).trim() !== '') ? Number(this.form.value.bulkMinQty) : null;
-      const bulkPrice = (this.form.value.bulkPrice !== null && String(this.form.value.bulkPrice).trim() !== '') ? Number(this.form.value.bulkPrice) : null;
-
       const productData: any = {
         reference: reference,
         name: this.form.value.name!,
@@ -314,7 +307,6 @@ export class ProductFormComponent implements OnInit {
         hasObservation: this.form.value.hasObservation ?? false,
         imageUrl: finalMainImageUrl,
         ...(stockValue !== null ? { stock: stockValue } : {}),
-        ...(bulkMinQty !== null && bulkPrice !== null ? { bulkMinQty, bulkPrice } : {}),
         ...(finalExtraImagesUrls.length > 0 ? { images: finalExtraImagesUrls } : {})
       };
 
@@ -326,10 +318,6 @@ export class ProductFormComponent implements OnInit {
         const updateData: Record<string, unknown> = { ...productData };
         if (stockValue === null) updateData['stock'] = null;
         if (finalExtraImagesUrls.length === 0) updateData['images'] = [];
-        if (bulkMinQty === null || bulkPrice === null) {
-          updateData['bulkMinQty'] = null;
-          updateData['bulkPrice']  = null;
-        }
         await this.productService.updateProduct(this.productId()!, updateData);
       } else {
         console.log('[DEBUG] Creando nuevo producto...');

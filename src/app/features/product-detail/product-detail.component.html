@@ -164,32 +164,16 @@
         </div>
 
         <!-- Precio -->
-        <div class="rounded-2xl px-5 py-4 border transition-colors duration-300"
-          [class]="isBulkActive()
-            ? 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-700'
-            : 'bg-brand-50 dark:bg-brand-900/20 border-brand-100 dark:border-brand-600'">
-          <p class="text-xs font-medium mb-1 uppercase tracking-wide"
-            [class]="isBulkActive() ? 'text-purple-400 dark:text-purple-500' : 'text-brand-400 dark:text-brand-500'">
+        <div class="rounded-2xl px-5 py-4 border transition-colors duration-300 bg-brand-50 dark:bg-brand-900/20 border-brand-100 dark:border-brand-600">
+          <p class="text-xs font-medium mb-1 uppercase tracking-wide text-brand-400 dark:text-brand-500">
             Precio por unidad
           </p>
           <div class="flex items-end gap-3">
-            <p class="text-4xl font-extrabold transition-colors duration-200"
-              [class]="isBulkActive() ? 'text-purple-600 dark:text-purple-400' : 'text-brand-500 dark:text-brand-400'">
-              {{ activePrice() | currency:'COP':'symbol':'1.0-0' }}
+            <p class="text-4xl font-extrabold transition-colors duration-200 text-brand-500 dark:text-brand-400">
+              {{ product()!.price | currency:'COP':'symbol':'1.0-0' }}
             </p>
-            @if (isBulkActive()) {
-              <p class="text-sm line-through text-gray-400 dark:text-gray-500 mb-1">{{ product()!.price | currency:'COP':'symbol':'1.0-0' }}</p>
-            }
           </div>
-          @if (isBulkActive()) {
-            <p class="text-purple-600 dark:text-purple-300 text-xs font-semibold mt-1">✓ Precio especial aplicado por cantidad</p>
-          } @else if (product()!.bulkMinQty && product()!.bulkPrice) {
-            <p class="text-purple-500 dark:text-purple-400 text-xs font-semibold mt-1">
-              Llevando {{ product()!.bulkMinQty }} o más: {{ product()!.bulkPrice | currency:'COP':'symbol':'1.0-0' }} c/u
-            </p>
-          } @else {
-            <p class="text-brand-400 dark:text-brand-500 text-xs mt-1">* El envío se acuerda por WhatsApp</p>
-          }
+          <p class="text-brand-400 dark:text-brand-500 text-xs mt-1">* El envío se acuerda por WhatsApp</p>
         </div>
 
         <!-- Descripción -->
