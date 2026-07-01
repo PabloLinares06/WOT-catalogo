@@ -12,17 +12,16 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function createAdmin(email: string, passwordPlainText: string) {
-  const existing = await prisma.user.findUnique({ where: { email } });
-  if (existing) {
-    console.log(`ℹ️  El usuario "${email}" ya existe. No se creó uno nuevo.`);
-    return;
-  }
-
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(passwordPlainText, saltRounds);
 
-  const user = await prisma.user.create({
-    data: {
+  const user = await prisma.user.upsert({
+    where: { email },
+    update: {
+      passwordHash,
+      role: 'admin',
+    },
+    create: {
       email,
       passwordHash,
       role: 'admin',
@@ -30,7 +29,7 @@ async function createAdmin(email: string, passwordPlainText: string) {
     select: { id: true, email: true, role: true },
   });
 
-  console.log('✅ Usuario administrador creado:');
+  console.log('✅ Usuario administrador registrado/actualizado:');
   console.log(`   Email: ${user.email}`);
   console.log(`   Rol:   ${user.role}`);
   console.log(`   ID:    ${user.id}`);
