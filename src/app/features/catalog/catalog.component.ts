@@ -12,6 +12,7 @@ import { KioskService } from '../../core/services/kiosk.service';
 import { Product } from '../../core/models/product.model';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-catalog',
@@ -26,6 +27,8 @@ export class CatalogComponent implements OnInit, AfterViewInit, OnDestroy {
   private bannerService = inject(BannerService);
   private categoryService = inject(CategoryService);
   kioskService = inject(KioskService); // público — el template lo usa directamente
+
+  whatsappNumber = environment.whatsappNumber;
 
   @ViewChild('loadMoreSentinel') private sentinel?: ElementRef<HTMLDivElement>;
   private observer?: IntersectionObserver;

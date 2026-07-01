@@ -3,5 +3,5 @@ export const environment = {
   apiUrl: '',  // Vacío: Nginx enruta /api/* internamente al backend (sin CORS)
   spacesUrl: 'https://catalogo-imagenes-api.nyc3.cdn.digitaloceanspaces.com',
   maintenance: false,
-  whatsappNumber: '573127660414'
+  whatsappNumber: ''
 };
