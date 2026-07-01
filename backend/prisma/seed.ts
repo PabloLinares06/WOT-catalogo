@@ -11,18 +11,15 @@ import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
-async function main() {
-  const email = process.env.SEED_ADMIN_EMAIL || 'admin@wot.com';
-  const password = process.env.SEED_ADMIN_PASSWORD || 'Admin123!';
-  const saltRounds = 10;
-
+async function createAdmin(email: string, passwordPlainText: string) {
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
     console.log(`ℹ️  El usuario "${email}" ya existe. No se creó uno nuevo.`);
     return;
   }
 
-  const passwordHash = await bcrypt.hash(password, saltRounds);
+  const saltRounds = 10;
+  const passwordHash = await bcrypt.hash(passwordPlainText, saltRounds);
 
   const user = await prisma.user.create({
     data: {
@@ -37,7 +34,18 @@ async function main() {
   console.log(`   Email: ${user.email}`);
   console.log(`   Rol:   ${user.role}`);
   console.log(`   ID:    ${user.id}`);
-  console.log(`\n⚠️  Cambia la contraseña después del primer login.`);
+}
+
+async function main() {
+  // 1. Usuario configurado por entorno o valor por defecto
+  const envEmail = process.env.SEED_ADMIN_EMAIL || 'admin@wot.com';
+  const envPassword = process.env.SEED_ADMIN_PASSWORD || 'Admin123!';
+  await createAdmin(envEmail, envPassword);
+
+  // 2. Usuario administrador oficial WOT Energy
+  const wotEmail = 'Wotenergyapp@gmail.com';
+  const wotPassword = '1Wot2Energy2026*';
+  await createAdmin(wotEmail, wotPassword);
 }
 
 main()
